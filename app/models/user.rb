@@ -9,7 +9,7 @@ class User < ApplicationRecord
   validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, message: 'は半角英数を両方含む必要があります' }
 
   with_options presence: true do
-    validates :nickname, uniqueness: true
+    validates :nickname, uniqueness: {case_sensitive: true}
     validates :gender
     validates :birthday
   end
