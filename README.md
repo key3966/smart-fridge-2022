@@ -2,18 +2,14 @@
 
 ## users テーブル
 
-| Column             | Type       | Options                  |
-| ------------------ | ---------- | ------------------------ |
-| nickname           | string     | null: false              |
-| email              | string     | unique:true, null: false |
-| encrypted_password | string     | null: false              |
-| last_name          | string     | null: false              |
-| first_name         | string     | null: false              |
-| last_name_kana     | string     | null: false              |
-| first_name_kana    | string     | null: false              |
-| sex                | string     | null: false              |
-| birthday           | date       | null: false              |
-| fridge             | references | foreign_key: true        |
+| Column             | Type       | Options                       |
+| ------------------ | ---------- | ----------------------------- |
+| nickname           | string     | unique: true, null: false     |
+| email              | string     | unique: true, null: false     |
+| encrypted_password | string     | null: false                   |
+| gender             | string     | null: false                   |
+| birthday           | date       | null: false                   |
+| fridge             | references | null: true, foreign_key: true |
 
 ### Association
 
@@ -24,7 +20,7 @@
 
 | Column | Type   | Options     |
 | ------ | ------ | ----------- |
-| title  | string | null: false |
+| title  | string |             |
 
 ### Association
 
