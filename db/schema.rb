@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_14_040634) do
+ActiveRecord::Schema.define(version: 2022_02_14_064115) do
 
   create_table "fridges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2022_02_14_040634) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "nickname", null: false
-    t.string "sex", null: false
+    t.string "gender", null: false
     t.date "birthday", null: false
     t.bigint "fridge_id"
     t.string "reset_password_token"
