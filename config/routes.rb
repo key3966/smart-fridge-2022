@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   root to: "fridges#index"
   resources :fridges, only: [:index, :create, :update] do
     resources :shoppings, only: :index
+    resources :items, only: [:create, :update, :destroy]
   end
 end
