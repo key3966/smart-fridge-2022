@@ -1,22 +1,36 @@
 <%= render "shared/header"%>
 <%= image_tag('testbanner.jpeg', class: 'img-fluid') %>
 
-<% if user_signed_in? %>
+<% if user_signed_in? && current_user.fridge_id.nil? %>
+  <h5>冷蔵庫を新規作成してください</h5>
   <%= form_with model: @fridge, local: true do |f| %>
   <%= render 'shared/error_messages', model: f.object %>
   <%= f.text_field :title, placeholder: "冷蔵庫の名前を入力してください", class: 'form-control' %>
-  <%= f.submit "新規作成", class: 'btn btn-primary' %>
+  <div class="text-end">
+    <%= f.submit "新規作成", class: 'btn btn-primary' %>
+  </div>
   <% end %>
 <% else %>
-
 <% end %>
+
 <%# 冷蔵庫アイテム一覧 %>
-<div>
-  <h3 class='your-fridge'>
-    <%# @current_user.nickname %>〇〇さんの冷蔵庫
-  </h3>
-</div>
+<% if user_signed_in? && current_user.fridge_id.present? %>
+  <% if current_user.fridge.title.blank? %>
+    <div>
+      <h3 class='your-fridge'>
+        <%= current_user.nickname %>さんの冷蔵庫
+      </h3>
+    </div>
+  <% else %>
+    <div>
+      <h3 class='your-fridge'>
+        <%= current_user.fridge.title %>
+      </h3>
+    </div>
+  <% end %>
+<% end %>
 <%# link_to "買い物へ行く", #path(@fridge.id) %>
+
 <div>
   <h6>新規アイテム登録</h6>
 </div>
