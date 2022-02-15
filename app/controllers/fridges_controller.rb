@@ -5,15 +5,17 @@ class FridgesController < ApplicationController
 
   def create
     @fridge = Fridge.new(fridge_params)
+    @user = User.find(current_user.id)
     if @fridge.save
-      user = User.find(current_user.id)
-      user.update(fridge_id: @fridge.id)
+      @user.update(fridge_id: @fridge.id)
       redirect_to root_path
     else
       render :index
     end
   end
 
+  def update
+  end
 
   private
 
