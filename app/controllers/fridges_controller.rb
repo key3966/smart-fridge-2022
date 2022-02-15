@@ -11,11 +11,14 @@ class FridgesController < ApplicationController
       redirect_to root_path
     else
       render :index
+    end
   end
 
 
   private
-    def fridge_params
-      params.require(:fridge).permit(:title)
-    end
+
+  def fridge_params
+    params.require(:fridge).permit(:title)
+  end
+
 end
