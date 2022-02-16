@@ -2,6 +2,7 @@ class FridgesController < ApplicationController
   def index
     @fridge = Fridge.new
     @item = Item.new
+    @items = current_user.fridge.items
   end
 
   def create
