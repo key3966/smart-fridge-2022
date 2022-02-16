@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2022_02_15_080343) do
     t.string "name", null: false
     t.integer "category_id", null: false
     t.integer "amount_id", null: false
-    t.date "exp_date", null: false
+    t.date "exp_date"
     t.bigint "fridge_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

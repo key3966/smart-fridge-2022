@@ -7,7 +7,6 @@ class Item < ApplicationRecord
   with_options presence: true do
     validates :regular
     validates :name
-    validates :exp_date
   end
 
   with_options numericality: { other_than: 0, message: "can't be blank" } do

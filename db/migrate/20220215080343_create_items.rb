@@ -5,7 +5,7 @@ class CreateItems < ActiveRecord::Migration[6.0]
       t.string     :name,        null: false
       t.integer    :category_id, null: false
       t.integer    :amount_id,   null: false
-      t.date       :exp_date,    null: false
+      t.date       :exp_date
       t.references :fridge,      null: false, foreign_key: true
       t.timestamps
     end
