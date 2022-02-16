@@ -39,6 +39,9 @@
     <h6>新規アイテム登録</h6>
   </div>
   <%= form_with model: @item, local: true do |f| %>
+
+  <%= render 'shared/error_messages', model: f.object %>
+
     <table class="table table-striped table-hover table-sm">
       <thead>
         <tr>
@@ -57,7 +60,7 @@
           <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.date_field :exp_date, class: 'form-control'%></td>
-          <td><%= f.hidden_field :fridge_id, value: current_user.fridge_id %><%= f.submit "登録", class: 'btn btn-primary' %></td>
+          <td><%= f.submit "登録", class: 'btn btn-primary' %></td>
       </tbody>
     </table>
   <% end %>
