@@ -4,10 +4,9 @@ class Amount < ActiveHash::Base
     { id: 1, name: 'なし' },
     { id: 2, name: '少ない' },
     { id: 3, name: '半分程度' },
-    { id: 4, name: '多い' },
+    { id: 4, name: '多い' }
   ]
 
   include ActiveHash::Associations
   has_many :items
-
-  end
+end

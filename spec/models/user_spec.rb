@@ -21,7 +21,7 @@ RSpec.describe User, type: :model do
         @user.save
         another_user = FactoryBot.build(:user, nickname: @user.nickname)
         another_user.valid?
-        expect(another_user.errors.full_messages).to include("Nickname has already been taken")
+        expect(another_user.errors.full_messages).to include('Nickname has already been taken')
       end
       it 'emailが空では登録できない' do
         @user.email = ''

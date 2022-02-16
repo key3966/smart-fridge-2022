@@ -39,7 +39,7 @@ RSpec.describe Item, type: :model do
       it '賞味/消費期限が今日より前の日付だと登録できない' do
         @item.exp_date = Faker::Date.backward
         @item.valid?
-        expect(@item.errors.full_messages).to include("Exp date は今日以降を選択してください")
+        expect(@item.errors.full_messages).to include('Exp date は今日以降を選択してください')
       end
     end
   end

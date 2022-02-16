@@ -4,8 +4,8 @@ class Item < ApplicationRecord
   belongs_to :amount
   belongs_to :fridge
 
-  validate :exp_date_check 
-  
+  validate :exp_date_check
+
   with_options presence: true do
     validates :regular
     validates :name
@@ -19,8 +19,6 @@ class Item < ApplicationRecord
   private
 
   def exp_date_check
-    if exp_date.present? && exp_date < Date.today
-      errors.add(:exp_date, "は今日以降を選択してください")
-    end
+    errors.add(:exp_date, 'は今日以降を選択してください') if exp_date.present? && exp_date < Date.today
   end
 end
