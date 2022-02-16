@@ -2,7 +2,11 @@ class FridgesController < ApplicationController
   def index
     @fridge = Fridge.new
     @item = Item.new
-    @items = current_user.fridge.items
+    if user_signed_in? 
+      if current_user.fridge.present?
+        @items = current_user.fridge.items
+      end
+    end
   end
 
   def create
