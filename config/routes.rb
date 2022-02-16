@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :fridges, only: [:index, :create, :update] do
     resources :shoppings, only: :index
   end
+  resources :items, only: [:create, :update, :destroy]
 end
