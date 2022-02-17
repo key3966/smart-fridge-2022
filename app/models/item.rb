@@ -4,7 +4,7 @@ class Item < ApplicationRecord
   belongs_to :amount
   belongs_to :fridge
 
-  validate :exp_date_check
+  #validate :exp_date_check #今は必要かわからないのでコメントアウト 2022/02/17
 
   with_options presence: true do
     validates :regular
