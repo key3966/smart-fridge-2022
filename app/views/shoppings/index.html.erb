@@ -1,2 +1,31 @@
 <%= image_tag('shopping.jpeg', class: 'img-fluid') %>
 
+<%= form_with model: @shopping_items, local: true do |f| %>
+
+  <%= f.label :shopping_date, '買い物日' %>
+  <%= f.date_field :shopping_date, value: Date.today, class: 'form-control'%>
+
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">購入</th>
+        <th scope="col">名前</th>
+        <th scope="col">カテゴリー</th>
+        <th scope="col">残量</th>
+        <th scope="col">賞味/消費期限</th>
+      </tr>
+    </thead>
+    <% @items.each do |item| %>
+      <tbody>
+        <tr>
+          <td><%= f.check_box :shopping_item_ids, { multiple: true}, item.id, nil %></td>
+          <td><%= item.name %></td>
+          <td><%= item.category.name %></td>
+          <td><%= item.amount.name %></td>
+          <td><%= item.exp_date %></td>
+        </tr>
+      </tbody>
+    <% end %>
+  </table>
+  <%= f.submit "買い物を終了する", class: 'btn btn-warning' %>
+<% end %>
