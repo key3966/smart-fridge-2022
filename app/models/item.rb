@@ -3,6 +3,8 @@ class Item < ApplicationRecord
   belongs_to :category
   belongs_to :amount
   belongs_to :fridge
+  has_many :shoppings, through: :shopping_items
+  has_many :shopping_items
 
   #validate :exp_date_check #今は必要かわからないのでコメントアウト 2022/02/17
 
