@@ -14,6 +14,7 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       redirect_to root_path
     else
+      @item = Item.new
       @items = current_user.fridge.items
       render template: 'fridges/index'
     end
