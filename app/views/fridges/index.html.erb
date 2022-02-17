@@ -91,6 +91,7 @@
       <th scope="col">残量</th>
       <th scope="col">消費/賞味期限</th>
       <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <% @items.each do |item| %>
@@ -103,6 +104,7 @@
           <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.date_field :exp_date, class: 'form-control'%></td>
           <td><%= f.submit "編集", class: 'btn btn-primary' %></td>
+          <td><%= link_to "削除", item_path(item.id), method: :delete, class: 'btn btn-danger' %></td>
         </tr>
       <% end %>
     </tbody>
