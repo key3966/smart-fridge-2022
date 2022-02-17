@@ -19,7 +19,7 @@
 <% end %>
 
 <%# 冷蔵庫情報 %>
-<%# 冷蔵庫名表示 %>  <%# link_to "買い物へ行く", #path(@fridge.id) %>
+<%# 冷蔵庫名表示 %>  
 <% if user_signed_in? && current_user.fridge_id.present? %>
   <% if current_user.fridge.title.blank? %>
     <div>
@@ -71,13 +71,13 @@
     <% if current_user.fridge.title.blank? %>
     <div>
       <h3 class='your-fridge'>
-        <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧
+        <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧<%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id) %>
       </h3>
     </div>
   <% else %>
     <div>
       <h3 class='your-fridge'>
-        <%= current_user.fridge.title %>のアイテム一覧
+        <%= current_user.fridge.title %>のアイテム一覧<%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id) %>
       </h3>
     </div>
   <% end %>
