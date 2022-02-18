@@ -1,7 +1,7 @@
 <%= image_tag('shopping.jpeg', class: 'img-fluid') %>
 
-<%= form_with model: @shopping_form, local: true do |f| %>
-
+<%= form_with model: @shopping_form, url: fridge_shoppings_path, local: true do |f| %>
+  <%= render 'shared/error_messages', model: f.object %>
   <%= f.label :shopping_date, '買い物日' %>
   <%= f.date_field :shopping_date, value: Date.today, class: 'form-control'%>
 
