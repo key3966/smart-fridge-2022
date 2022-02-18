@@ -11,8 +11,8 @@ class ShoppingForm
   end
 
   def save
-    Shopping.create(shopping_date: shopping_date, fridge_id: fridge_id, user_id: user_id)
-    ids = params[:shoping_item_ids]
-    Item.where(id: ids).update_all(amount_id: 5)
+    ids = shopping_item_ids
+    Shopping.create(shopping_date: shopping_date, fridge_id: fridge_id, user_id: user_id, item_ids: ids)
+    Item.where(id: ids).update_all(amount_id: 4, exp_date: nil)
   end
 end
