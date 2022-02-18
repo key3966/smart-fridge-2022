@@ -1,4 +1,6 @@
 class RequestsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     @request = Request.new(request_params)
     if @request.save
@@ -11,6 +13,9 @@ class RequestsController < ApplicationController
   end
 
   def destroy
+    @request = Request.find(params[:id])
+    @request.destroy
+    redirect_to root_path
   end
 
   private
