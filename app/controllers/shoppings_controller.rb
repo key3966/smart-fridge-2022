@@ -1,9 +1,10 @@
 class ShoppingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_fridge, only: [:index, :create]
+  before_action :same_fridge?, only: [:index, :create]
 
   def index
-    @items = fridge.items.order(regular: :desc, amount_id: :asc)
+    @items = @fridge.items.order(regular: :desc, amount_id: :asc)
     @shopping_form = ShoppingForm.new
   end
 
@@ -13,7 +14,7 @@ class ShoppingsController < ApplicationController
       @shopping_form.save
       redirect_to root_path
     else
-      @items = fridge.items.order(regular: :desc, amount_id: :asc)
+      @items = @fridge.items.order(regular: :desc, amount_id: :asc)
       render :index
     end
   end
@@ -25,6 +26,10 @@ class ShoppingsController < ApplicationController
   end
 
   def set_fridge
-    fridge = Fridge.find(params[:fridge_id])
+    @fridge = Fridge.find(params[:fridge_id])
+  end
+
+  def same_fridge?
+    redirect_to root_path unless current_user.fridge_id == Fridge.find(params[:fridge_id]).id
   end
 end
