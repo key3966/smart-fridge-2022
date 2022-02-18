@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_item, only: [:update, :destroy]
+  before_action :same_fridge?, only: [:update, :destroy]
 
   def create
     @item = Item.new(item_params)
@@ -12,7 +14,6 @@ class ItemsController < ApplicationController
   end
 
   def update
-    redirect_to root_path unless @item.fridge_id == current_user.fridge_id
     if @item.update(item_params)
       redirect_to root_path
     else
@@ -23,7 +24,6 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    redirect_to root_path unless @item.fridge_id == current_user.fridge_id
     @item.destroy
     redirect_to root_path
   end
@@ -36,5 +36,9 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def same_fridge?
+    redirect_to root_path unless @item.fridge_id == current_user.fridge_id
   end
 end
