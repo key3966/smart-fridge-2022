@@ -106,7 +106,7 @@
           <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.date_field :exp_date, class: 'form-control'%></td>
-          <td><%= item.latest_shopping_date %></td>
+          <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
           <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
           <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】このアイテムを削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
         </tr>
