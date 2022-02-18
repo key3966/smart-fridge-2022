@@ -2,6 +2,7 @@ class FridgesController < ApplicationController
   def index
     @fridge = Fridge.new
     @item = Item.new
+    @request = Request.new
     if user_signed_in? 
       if current_user.fridge.present?
         @items = current_user.fridge.items
