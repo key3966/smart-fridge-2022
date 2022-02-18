@@ -18,6 +18,10 @@ class Item < ApplicationRecord
     validates :amount_id
   end
 
+  def latest_shopping_date
+    shoppings.order(created_at: :desc).first.shopping_date
+  end
+
   private
 
   def exp_date_check

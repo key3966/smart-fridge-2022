@@ -71,15 +71,17 @@
     <% if current_user.fridge.title.blank? %>
     <div>
       <h3 class='your-fridge'>
-        <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧<%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id) %>
+        <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧
       </h3>
     </div>
+    <%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-outline-success" %>
   <% else %>
     <div>
       <h3 class='your-fridge'>
-        <%= current_user.fridge.title %>のアイテム一覧<%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id) %>
+        <%= current_user.fridge.title %>のアイテム一覧
       </h3>
     </div>
+    <%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-outline-success" %>
   <% end %>
   </div>
   <table class="table table-hover table-sm">
@@ -90,6 +92,7 @@
       <th scope="col">カテゴリー</th>
       <th scope="col">残量</th>
       <th scope="col">賞味/消費期限</th>
+      <th scope="col">最終購入日</th>
       <th scope="col"></th>
       <th scope="col"></th>
     </tr>
@@ -103,6 +106,7 @@
           <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
           <td><%= f.date_field :exp_date, class: 'form-control'%></td>
+          <td><%= item.latest_shopping_date %></td>
           <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
           <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】このアイテムを削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
         </tr>
