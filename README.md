@@ -15,6 +15,7 @@
 
 - belongs_to :fridge
 - has_many :shoppings
+- has_one :request
 
 ## fridges テーブル
 
@@ -27,6 +28,7 @@
 - has_many :users
 - has_many :items
 - has_many :shoppings
+- has_many :requests
 
 ## items テーブル
 
@@ -85,3 +87,15 @@
 
 - belongs_to :fridge
 - belongs_to :item
+
+## requests テーブル
+
+| Column        | Type       | Options                        |
+| ------------- | ---------- | ------------------------------ |
+| fridge        | references | null: false, foreign_key: true |
+| user          | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :fridge
+- belongs_to :user
