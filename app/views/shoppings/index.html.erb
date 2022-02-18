@@ -3,7 +3,7 @@
 <%= form_with model: @shopping_form, url: fridge_shoppings_path, local: true do |f| %>
   <%= render 'shared/error_messages', model: f.object %>
   <%= f.label :shopping_date, '買い物日' %>
-  <%= f.date_field :shopping_date, value: Date.today, class: 'form-control'%>
+  <%= f.date_field :shopping_date, value: Date.today, class: 'form-control' %>
 
   <table class="table table-hover table-sm">
     <thead>
@@ -27,5 +27,5 @@
       </tbody>
     <% end %>
   </table>
-  <%= f.submit "買い物を終了する", class: 'btn btn-warning' %>
+  <%= f.submit "買い物を終了する", data: { confirm: '本当に買い物を終了しますか？'}, class: 'btn btn-warning' %>
 <% end %>
