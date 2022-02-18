@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_080343) do
+ActiveRecord::Schema.define(version: 2022_02_17_091740) do
 
   create_table "fridges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -28,6 +28,25 @@ ActiveRecord::Schema.define(version: 2022_02_15_080343) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["fridge_id"], name: "index_items_on_fridge_id"
+  end
+
+  create_table "shopping_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "shopping_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_shopping_items_on_item_id"
+    t.index ["shopping_id"], name: "index_shopping_items_on_shopping_id"
+  end
+
+  create_table "shoppings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "shopping_date", null: false
+    t.bigint "fridge_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fridge_id"], name: "index_shoppings_on_fridge_id"
+    t.index ["user_id"], name: "index_shoppings_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -48,5 +67,9 @@ ActiveRecord::Schema.define(version: 2022_02_15_080343) do
   end
 
   add_foreign_key "items", "fridges"
+  add_foreign_key "shopping_items", "items"
+  add_foreign_key "shopping_items", "shoppings"
+  add_foreign_key "shoppings", "fridges"
+  add_foreign_key "shoppings", "users"
   add_foreign_key "users", "fridges"
 end
