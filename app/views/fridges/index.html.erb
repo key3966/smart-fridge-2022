@@ -25,6 +25,7 @@
 
 
 <%# 冷蔵庫情報 %>
+
 <%# 冷蔵庫名表示 %>  
 <% if user_signed_in? && current_user.fridge_id.present? %>
   <% if current_user.fridge.title.blank? %>
@@ -39,6 +40,15 @@
         <%= current_user.fridge.title %>
       </h3>
     </div>
+  <% end %>
+
+  <%# 共有リクエスト表示 %>
+  <% if current_user.fridge.requests.present? %>
+    <% current_user.fridge.requests.each do |request| %>
+      <h4><%= "#{request.user.nickname}さんから冷蔵庫共有申請が届いています" %></h4>
+    <% end %>
+    
+  <% else %>
   <% end %>
   <%# 新規アイテム登録フォーム %>
   <div>
