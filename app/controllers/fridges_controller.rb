@@ -1,13 +1,10 @@
 class FridgesController < ApplicationController
+  
   def index
     @fridge = Fridge.new
     @item = Item.new
     @request = Request.new
-    if user_signed_in? 
-      if current_user.fridge.present?
-        @items = current_user.fridge.items
-      end
-    end
+    @items = current_user.fridge.items if user_signed_in? && current_user.fridge.present?
   end
 
   def create
@@ -19,9 +16,6 @@ class FridgesController < ApplicationController
     else
       render :index
     end
-  end
-
-  def update
   end
 
   private
