@@ -1,6 +1,7 @@
 class RequestsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_request, only: [:update, :destroy]
+  before_action :same_fridge?, only: [:update, :destroy]
 
   def create
     @request = Request.new(request_params)
@@ -40,4 +41,8 @@ class RequestsController < ApplicationController
     @items = current_user.fridge.items if user_signed_in? && current_user.fridge.present?
     render template: 'fridges/index'
   end 
+
+  def same_fridge?
+    redirect_to root_path unless @request.fridge_id == current_user.fridge_id
+  end
 end
