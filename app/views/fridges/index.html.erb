@@ -45,9 +45,10 @@
   <%# 共有リクエスト表示 %>
   <% if current_user.fridge.requests.present? %>
     <% current_user.fridge.requests.each do |request| %>
-      <h4><%= "#{request.user.nickname}さんから冷蔵庫共有申請が届いています" %></h4>
+      <h4><%= "#{request.user.nickname}さんからあなたの冷蔵庫の共有リクエストが届いています" %></h4>
+      <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
+      <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
     <% end %>
-    
   <% else %>
   <% end %>
   <%# 新規アイテム登録フォーム %>
