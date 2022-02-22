@@ -61,7 +61,7 @@
 
           <%# 新規アイテム登録フォーム %>
           <div class="text-dark mt-3">
-            <h6 class="fw-bold">🥑新規アイテム登録🥑</h6>
+            <h6 class="fw-bold">🥑 新規アイテム登録 🥑</h6>
           </div>
           <%= form_with model: @item, local: true do |f| %>
 
@@ -99,13 +99,13 @@
               </h3>
             </div>
             <%# 買い物リンク %>
-            <%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
+            <%= link_to "お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
           <% else %>
             <div>
               <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
                 <%= current_user.fridge.title %>のアイテム一覧
               </h3>
-              <%= link_to "買い物へ行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
+              <%= link_to "お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
             </div>
             <%# 買い物リンク %>
           <% end %>
