@@ -67,7 +67,7 @@
 
           <%= render 'shared/error_messages', model: f.object %>
 
-            <table class="table table-hover table-sm text-dark mt-3 ">
+            <table class="table table-hover table-sm text-dark mt-2 ">
               <thead>
                 <tr>
                   <th scope="col">常備</th>
@@ -98,16 +98,12 @@
                 <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧
               </h3>
             </div>
-            <%# 買い物リンク %>
-            <%= link_to "お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
           <% else %>
             <div>
               <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
                 <%= current_user.fridge.title %>のアイテム一覧
               </h3>
-              <%= link_to "お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-success mt-2" %>
             </div>
-            <%# 買い物リンク %>
           <% end %>
           </div>
           <table class="table table-hover table-sm text-dark mt-3">
