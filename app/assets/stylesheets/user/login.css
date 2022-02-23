@@ -1,3 +1,17 @@
+.sessions-background{
+  height: 100vh;
+  background-image: url(top.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  position: relative;
+}
+
+.sessions-box {
+  height: 100%;
+}
+
 .login-btn {
   width: 50%;
   margin: 0 auto;

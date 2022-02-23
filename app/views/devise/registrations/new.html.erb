@@ -1,8 +1,9 @@
+<%= render "shared/header"%>
 <%= form_with model: @user, url: user_registration_path, class: 'registration-main', local: true do |f| %>
 <div class='form-wrap'>
   <div class='form-header'>
     <h1 class='form-header-text'>
-      ユーザー情報入力
+      ユーザー新規登録
     </h1>
   </div>
 
@@ -42,10 +43,10 @@
       <label class="form-text">性別</label>
       <span class="indispensable">必須</span>
     </div>
-    <%= f.radio_button :gender, :male %>
-    <%= f.label :gender, "男性", {value: :male, style: "display: inline-block;"} %>
-    <%= f.radio_button :gender, :female %>
-    <%= f.label :gender, "女性", {value: :female, style: "display: inline-block;"} %>
+      <%= f.radio_button :gender, :male %>
+        <%= f.label :gender, "男性", {value: :male} %>
+      <%= f.radio_button :gender, :female %>
+        <%= f.label :gender, "女性", {value: :female} %>
   </div>
   <div class="form-group">
     <div class='form-text-wrap'>
@@ -67,15 +68,9 @@
     </div>
     <p class='info-text'>※ 本人情報は正しく入力してください。会員登録後、修正するにはお時間を頂く場合があります。</p>
   </div>
-  <div class="form-group">
-    <h2 class='form-bottom-text'>
-      「ユーザー登録」のボタンを押すことにより、
-      <span>利用規約</span>
-      <br>に同意したものとみなします
-    </h2>
-  </div>
   <div class='register-btn'>
     <%= f.submit "ユーザー登録" ,class:"register-red-btn" %>
   </div>
 </div>
 <% end %>
+

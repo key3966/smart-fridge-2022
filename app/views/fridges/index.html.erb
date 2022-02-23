@@ -1,5 +1,4 @@
 <%= render "shared/header"%>
-
 <div class= "background">
   <div class="box">
     <div class= "container">
@@ -37,15 +36,11 @@
         <% if user_signed_in? && current_user.fridge_id.present? %>
           <% if current_user.fridge.title.blank? %>
             <div>
-              <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-                <%= current_user.nickname %>さんの冷蔵庫
-              </h3>
+              <h1 class="text-dark mt-5 fw-bold"><%= current_user.nickname %>さんの冷蔵庫</h1><h5>ID:<%= current_user.fridge_id %></h5>
             </div>
           <% else %>
             <div>
-              <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-                <%= current_user.fridge.title %>
-              </h3>
+              <h1 class="text-dark mt-5 fw-bold"><i class="fa-light fa-cart-shopping"></i><%= current_user.fridge.title %></h1><h5>ID:<%= current_user.fridge_id %></h5>
             </div>
           <% end %>
 
@@ -60,9 +55,10 @@
           <% end %>
 
           <%# 新規アイテム登録フォーム %>
-          <div class="text-dark mt-3">
-            <h6 class="fw-bold">🥑 新規アイテム登録 🥑</h6>
-          </div>
+          <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
+              アイテム登録
+          </h3>
+
           <%= form_with model: @item, local: true do |f| %>
 
           <%= render 'shared/error_messages', model: f.object %>
@@ -92,21 +88,11 @@
 
           <%# アイテム編集フォーム %>
           <div>
-          <% if current_user.fridge.title.blank? %>
-            <div>
-              <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-                <%= current_user.nickname %>さんの冷蔵庫のアイテム一覧
-              </h3>
-            </div>
-          <% else %>
-            <div>
-              <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-                <%= current_user.fridge.title %>のアイテム一覧
-              </h3>
-            </div>
-          <% end %>
+            <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
+              アイテム一覧
+            </h3>
           </div>
-          <table class="table table-hover table-sm text-dark mt-3">
+          <table class="table table-hover table-sm text-dark mt-2">
           <thead>
             <tr>
               <th scope="col">常備</th>
