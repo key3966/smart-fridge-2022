@@ -5,7 +5,7 @@ class FridgesController < ApplicationController
     @item = Item.new
     @request = Request.new
     @q = Item.ransack(params[:q])
-    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    @q.sorts = ['amount_id desc', 'category_id asc', 'exp_date asc', 'regular desc']
     @items = @q.result(distinct: true)
   end
 
