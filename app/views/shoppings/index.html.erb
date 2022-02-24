@@ -1,38 +1,43 @@
 <%= render "shared/header"%>
-<div class= "shopping-background">
-  <div class= "shopping-box">
+<div class= "background">
+  <div class= "box">
     <div class= "container">
-      <div class= "row justify-content-center">
+      <div class= "row">
         <%= form_with model: @shopping_form, url: fridge_shoppings_path, local: true do |f| %>
           <%= render 'shared/error_messages', model: f.object %>
           <h5 class="text-dark mt-5 fw-bold">
-            <%= f.label :shopping_date, 'お買い物の日付を選択してください' %>
+            <%= f.label :shopping_date, 'お買い物の日付を選択' %>
           </h5>
-          <%= f.date_field :shopping_date, value: Date.today, class: 'form-control' %>
+          <div class='col-3 mx-auto'>
+            <%= f.date_field :shopping_date, value: Date.today, class: 'form-control' %>
+          </div>
           <h3 class="text-dark mt-5 fw-bold">
             🛒 お買い物リスト 
           </h3>
-          <table class="table table-hover table table-bordered table-sm mt-3">
+          <table class="table table-hover table-light table-bordered table-sm mt-3">
             <thead>
               <tr>
                 <th scope="col">購入</th>
-                <th scope="col">名前</th>
-                <th scope="col">カテゴリー</th>
-                <th scope="col">残量</th>
-                <th scope="col">賞味/消費期限</th>
-                <th scope="col">最終購入日</th>
+                <th scope="col"><%= sort_link(@q, :name, "アイテム名" )%></th>
+                <th scope="col"><%= sort_link(@q, :category_id, "カテゴリ" )%></th>
+                <th scope="col"><%= sort_link(@q, :amount_id, "残量" )%></th>
+                <th scope="col"><%= sort_link(@q, :exp_date, "賞味/消費期限" )%></th>
+                <th scope="col">最新購入日</th>
               </tr>
             </thead>
             <% @items.each do |item| %>
               <tbody>
-                <tr class="table-light">
-                  <td><%= f.check_box :shopping_item_ids, { multiple: true}, item.id, nil %></td>
-                  <td><%= item.name %></td>
-                  <td><%= item.category.name %></td>
-                  <td><%= item.amount.name %></td>
-                  <td><%= item.exp_date %></td>
-                  <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
-                </tr>
+                <% if current_user.fridge_id == item.fridge_id %>
+                  <tr class="table-light">
+                    <td><%= f.check_box :shopping_item_ids, { multiple: true}, item.id, nil %></td>
+                    <td><%= item.name %></td>
+                    <td><%= item.category.name %></td>
+                    <td><%= item.amount.name %></td>
+                    <td><%= item.exp_date %></td>
+                    <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
+                  </tr>
+                <% else %>
+                <% end %>
               </tbody>
             <% end %>
           </table>

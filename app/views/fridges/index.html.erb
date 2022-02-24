@@ -67,7 +67,7 @@
               <thead>
                 <tr>
                   <th scope="col">常備</th>
-                  <th scope="col">名前</th>
+                  <th scope="col">アイテム名</th>
                   <th scope="col">カテゴリ</th>
                   <th scope="col">残量</th>
                   <th scope="col">賞味/消費期限</th>
@@ -95,29 +95,32 @@
           <table class="table table-hover table-sm text-dark mt-2">
           <thead>
             <tr>
-              <th scope="col">常備</th>
-              <th scope="col">名前</th>
-              <th scope="col">カテゴリ</th>
-              <th scope="col">残量</th>
-              <th scope="col">賞味/消費期限</th>
-              <th scope="col">最終購入日</th>
+              <th scope="col"><%= sort_link(@q, :regular, "常備" )%></th>
+              <th scope="col"><%= sort_link(@q, :name, "アイテム名" )%></th>
+              <th scope="col"><%= sort_link(@q, :category_id, "カテゴリ" )%></th>
+              <th scope="col"><%= sort_link(@q, :amount_id, "残量" )%></th>
+              <th scope="col"><%= sort_link(@q, :exp_date, "賞味/消費期限" )%></th>
+              <th scope="col">最新購入日</th>
               <th scope="col"></th>
               <th scope="col"></th>
             </tr>
           </thead>
           <% @items.each do |item| %>
             <tbody>
-              <%= form_with model: item, local: true do |f| %>
-                <tr>
-                  <td><%= f.check_box :regular, {class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
-                  <td><%= f.text_field :name, placeholder: "test", class: 'form-control' %></td>
-                  <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
-                  <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
-                  <td><%= f.date_field :exp_date, class: 'form-control'%></td>
-                  <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
-                  <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
-                  <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】このアイテムを削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
-                </tr>
+              <% if current_user.fridge_id == item.fridge_id %>
+                <%= form_with model: item, local: true do |f| %>
+                  <tr>
+                    <td><%= f.check_box :regular, {class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
+                    <td><%= f.text_field :name, placeholder: "test", class: 'form-control' %></td>
+                    <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
+                    <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
+                    <td><%= f.date_field :exp_date, class: 'form-control'%></td>
+                    <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
+                    <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
+                    <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】このアイテムを削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
+                  </tr>
+                <% end %>
+              <% else %>
               <% end %>
             </tbody>
           <% end %>
