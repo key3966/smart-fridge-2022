@@ -8,7 +8,7 @@ class ItemsController < ApplicationController
     if @item.save
       redirect_to root_path
     else
-      @items = current_user.fridge.items
+      set_q
       render template: 'fridges/index'
     end
   end
@@ -18,7 +18,7 @@ class ItemsController < ApplicationController
       redirect_to root_path
     else
       @item = Item.new
-      @items = current_user.fridge.items
+      set_q
       render template: 'fridges/index'
     end
   end
@@ -40,5 +40,11 @@ class ItemsController < ApplicationController
 
   def same_fridge?
     redirect_to root_path unless @item.fridge_id == current_user.fridge_id
+  end
+
+  def set_q
+    @q = Item.ransack(params[:q])
+    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    @items = @q.result(distinct: true)
   end
 end

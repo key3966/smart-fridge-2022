@@ -4,7 +4,9 @@ class ShoppingsController < ApplicationController
   before_action :same_fridge?, only: [:index, :create]
 
   def index
-    @items = @fridge.items.order(regular: :desc, amount_id: :asc)
+    @q = Item.ransack(params[:q])
+    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    @items = @q.result(distinct: true)
     @shopping_form = ShoppingForm.new
   end
 
@@ -14,7 +16,6 @@ class ShoppingsController < ApplicationController
       @shopping_form.save
       redirect_to root_path
     else
-      @items = @fridge.items.order(regular: :desc, amount_id: :asc)
       render :index
     end
   end

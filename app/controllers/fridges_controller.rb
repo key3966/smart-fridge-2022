@@ -1,10 +1,12 @@
 class FridgesController < ApplicationController
-  
+
   def index
     @fridge = Fridge.new
     @item = Item.new
     @request = Request.new
-    @items = current_user.fridge.items if user_signed_in? && current_user.fridge.present?
+    @q = Item.ransack(params[:q])
+    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    @items = @q.result(distinct: true)
   end
 
   def create
@@ -23,4 +25,5 @@ class FridgesController < ApplicationController
   def fridge_params
     params.require(:fridge).permit(:title)
   end
+
 end
