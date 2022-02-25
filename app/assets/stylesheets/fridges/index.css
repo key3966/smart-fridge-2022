@@ -1,28 +1,17 @@
-body {
-  font-family: 'san-serif';
-}
 
 .background{
-  height: 100vh;
-  background: url(top.jpeg) center center;
+  min-height: 100%;
+  background-image: url(top.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+  background-position: center center;
   position: relative;
 }
 
-.background::before{
-  background-color: rgba(255,255,255,0.6);
-  position: absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  left:0;
-  content:' ';
-}
-
 .box{
-  position: absolute;
+  background-color: rgba(255,255,255,0.8);
   width: 100%;
+  margin: 0 auto;
   text-align: center;
 }

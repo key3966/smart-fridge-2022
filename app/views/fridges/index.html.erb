@@ -54,8 +54,8 @@
             <% if current_user.fridge.requests.present? %>
               <% current_user.fridge.requests.each do |request| %>
                 <div class="card">
-                  <div class="card-header text-muted">
-                    Requests 
+                  <div class="card-header">
+                    共有リクエスト通知
                   </div>
                   <div class="card-body col">
                     <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
@@ -71,11 +71,11 @@
             <% end %>
             <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
               <div class="card">
-                <div class="card-header text-muted">
-                  Shoppings
+                <div class="card-header">
+                  お買い物通知
                 </div>
                 <div class="card-body col">
-                  <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname} さんが買い物にいきました" %>
+                  <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
                 </div>
                 <div class="card-footer text-muted">
                   <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
