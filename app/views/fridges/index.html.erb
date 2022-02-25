@@ -4,25 +4,25 @@
     <div class= "container">
       <div class= "row">
         <% if user_signed_in? && current_user.fridge_id.nil? && current_user.request.nil? %>
-          <p>冷蔵庫を新規作成するか、共有する場合はその冷蔵庫IDを入力して共有リクエストを送信してください</p>
+          <div class="lead mt-5">冷蔵庫を新規作成してください。共有する場合はその冷蔵庫IDを入力して共有リクエストを送信してください</div>
             <%= form_with model: @fridge, local: true do |f| %>
-              <%= f.text_field :title, placeholder: "【冷蔵庫新規作成】冷蔵庫の名前を入力してください", class: 'form-control' %>
-              <div class="text-end">
+              <div class='col-5 mx-auto mt-3'>
+                <%= f.text_field :title, placeholder: "【冷蔵庫新規作成】冷蔵庫の名前を入力してください", class: 'form-control' %>
                 <%= f.submit "新規作成", class: 'btn btn-primary' %>
               </div>
             <% end %>
             <%= form_with model: @request, local: true do |f| %>
-              <%= render 'shared/error_messages', model: f.object %>
-              <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫のIDを入力してください", class: 'form-control' %>
-                <div class="text-end">
-                  <%= f.hidden_field :user_id, value: current_user.id %>
-                  <%= f.submit "共有リクエスト", class: 'btn btn-success' %>
-                </div>
+              <div class='col-5 mx-auto mt-5'>
+                <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫のIDを入力してください", class: 'form-control' %>
+                <%= f.hidden_field :user_id, value: current_user.id %>
+                <%= f.submit "共有リクエスト", class: 'btn btn-success' %>
+                <%= render 'shared/error_messages', model: f.object %>
+              </div>
             <% end %>
         <% elsif user_signed_in? && current_user.request.present? %>
-          <h2><%= "現在、冷蔵庫ID【#{current_user.request.fridge_id}】の共有リクエストを申請中です" %></h2>
-          <div class="text-end">
-            <%= link_to "申請を取り消す", request_path(current_user.request.id), method: :delete, class: "btn btn-danger" %>
+          <h3 class="mt-5"><%= "現在、冷蔵庫ID: #{current_user.request.fridge_id}の共有リクエストを申請中です" %></h3>
+          <div class='col mx-auto mt-1'>
+            <%= button_to "申請を取り消す", request_path(current_user.request.id), method: :delete, class: "btn btn-danger" %>
           </div>
         <% end %>
       </div>
@@ -36,23 +36,57 @@
         <% if user_signed_in? && current_user.fridge_id.present? %>
           <% if current_user.fridge.title.blank? %>
             <div>
-              <h1 class="text-dark mt-5 fw-bold"><%= current_user.nickname %>さんの冷蔵庫</h1><h5>ID:<%= current_user.fridge_id %></h5>
+              <h1 class="text-dark mt-5 fw-bold"><%= current_user.nickname %>さんの冷蔵庫</h1><p>ID:<%= current_user.fridge_id %></p>
             </div>
           <% else %>
             <div>
-              <h1 class="text-dark mt-5 fw-bold"><i class="fa-light fa-cart-shopping"></i><%= current_user.fridge.title %></h1><h5>ID:<%= current_user.fridge_id %></h5>
+              <h1 class="text-dark mt-5 fw-bold"><i class="fa-light fa-cart-shopping"></i><%= current_user.fridge.title %></h1><p>ID:<%= current_user.fridge_id %></p>
             </div>
           <% end %>
 
-          <%# 共有リクエスト表示 %>
-          <% if current_user.fridge.requests.present? %>
-            <% current_user.fridge.requests.each do |request| %>
-              <h4><%= "#{request.user.nickname}さんからあなたの冷蔵庫の共有リクエストが届いています" %></h4>
-              <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-primary" %>
-              <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-danger" %>
+          <%# 通知ボード %>
+          <div class="col-5 mx-auto">
+            <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#notification" aria-expanded="false" aria-controls="notification">
+              通知を表示 / 非表示
+            </button>
+          </div>
+          <div class="collapse" id="notification">
+            <% if current_user.fridge.requests.present? %>
+              <% current_user.fridge.requests.each do |request| %>
+                <div class="card">
+                  <div class="card-header text-muted">
+                    Requests 
+                  </div>
+                  <div class="card-body col">
+                    <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
+                    <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
+                    <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
+                  </div>
+                  <div class="card-footer text-muted">
+                    <%= "#{time_ago_in_words(request.created_at)} ago" %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
             <% end %>
-          <% else %>
-          <% end %>
+            <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
+              <div class="card">
+                <div class="card-header text-muted">
+                  Shoppings
+                </div>
+                <div class="card-body col">
+                  <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname} さんが買い物にいきました" %>
+                </div>
+                <div class="card-footer text-muted">
+                  <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
+                </div>
+              </div>
+            <% else %>
+            <% end %>
+          </div>
+
+          <%# 共有リクエスト表示 %>
+          
 
           <%# 新規アイテム登録フォーム %>
           <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
