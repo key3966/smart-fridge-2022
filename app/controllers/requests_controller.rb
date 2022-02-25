@@ -37,12 +37,13 @@ class RequestsController < ApplicationController
   end
 
   def render_top
-    @item = Item.new
-    @items = current_user.fridge.items if user_signed_in? && current_user.fridge.present?
+    @q = Item.ransack(params[:q])
+    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    @items = @q.result(distinct: true)
     render template: 'fridges/index'
   end 
 
   def same_fridge?
-    redirect_to root_path unless @request.fridge_id == current_user.fridge_id
+    redirect_to root_path unless @request.fridge_id == current_user.fridge_id || @request.fridge_id == current_user.request.fridge_id
   end
 end
