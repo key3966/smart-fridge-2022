@@ -54,7 +54,7 @@
             <% if current_user.fridge.requests.present? %>
               <% current_user.fridge.requests.each do |request| %>
                 <div class="card">
-                  <div class="card-header">
+                  <div class="card-header fw-bold">
                     共有リクエスト通知
                   </div>
                   <div class="card-body col">
@@ -62,16 +62,34 @@
                     <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
                     <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
                   </div>
-                  <div class="card-footer text-muted">
-                    <%= "#{time_ago_in_words(request.created_at)} ago" %>
-                  </div>
                 </div>
               <% end %>
             <% else %>
             <% end %>
+
+            <div class="card">
+              <div class="card-header fw-bold">
+                賞味/消費期限アラート
+              </div>
+              <div class="card-body col">
+                <% current_user.fridge.items.each do |item| %>
+                  <div class= mb-1>
+                  <% if item.exp_date.present? %>
+                    <% if item.exp_date == Date.today %>
+                      <%= "🚨 #{item.name}の賞味/賞味期限は今日までです 🚨" %>
+                    <% elsif item.exp_date < Date.today %>
+                      <%= "🤮 #{item.name}の賞味/賞味期限が切れています 🤮" %>
+                    <% else %>
+                    <% end %>
+                  <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
             <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
               <div class="card">
-                <div class="card-header">
+                <div class="card-header fw-bold">
                   お買い物通知
                 </div>
                 <div class="card-body col">
@@ -126,7 +144,7 @@
               アイテム一覧
             </h3>
           </div>
-          <table class="table table-hover table-sm text-dark mt-2">
+          <table class="table table-hover table-sm text-dark mt-2 mb-5">
           <thead>
             <tr>
               <th scope="col"><%= sort_link(@q, :regular, "常備" )%></th>

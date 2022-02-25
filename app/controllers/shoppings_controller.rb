@@ -5,7 +5,7 @@ class ShoppingsController < ApplicationController
 
   def index
     @q = Item.ransack(params[:q])
-    @q.sorts = ['regular desc', 'amount_id asc', 'category_id asc', 'exp_date asc']
+    @q.sorts = ['amount_id asc', 'exp_date asc', 'regular desc', 'category_id asc',]
     @items = @q.result(distinct: true)
     @shopping_form = ShoppingForm.new
   end
