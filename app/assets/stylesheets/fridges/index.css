@@ -10,8 +10,13 @@
 }
 
 .box{
-  background-color: rgba(255,255,255,0.75);
+  position: absolute;
+  background-color: rgba(255,255,255,0.66);
   width: 100%;
-  margin: 0 auto 2em;
+  margin: 0 auto;
   text-align: center;
+  /*top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;*/
 }
