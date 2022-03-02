@@ -1,185 +1,196 @@
 <%= render "shared/header"%>
-<div class= "background">
-  <div class="box">
-    <div class= "container">
-      <div class= "row">
-        <% if user_signed_in? && current_user.fridge_id.nil? && current_user.request.nil? %>
-          <div class="lead mt-5">冷蔵庫を新規作成してください。共有する場合はその冷蔵庫IDを入力して共有リクエストを送信してください</div>
-            <%= form_with model: @fridge, local: true do |f| %>
-              <div class='col-5 mx-auto mt-3'>
-                <%= f.text_field :title, placeholder: "【冷蔵庫新規作成】冷蔵庫の名前を入力してください", class: 'form-control' %>
-                <%= f.submit "新規作成", class: 'btn btn-primary' %>
-              </div>
-            <% end %>
-            <%= form_with model: @request, local: true do |f| %>
-              <div class='col-5 mx-auto mt-5'>
-                <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫のIDを入力してください", class: 'form-control' %>
-                <%= f.hidden_field :user_id, value: current_user.id %>
-                <%= f.submit "共有リクエスト", class: 'btn btn-success' %>
-                <%= render 'shared/error_messages', model: f.object %>
-              </div>
-            <% end %>
-        <% elsif user_signed_in? && current_user.request.present? %>
-          <h3 class="mt-5"><%= "現在、冷蔵庫ID: #{current_user.request.fridge_id}の共有リクエストを申請中です" %></h3>
-          <div class='col mx-auto mt-1'>
-            <%= button_to "申請を取り消す", request_path(current_user.request.id), method: :delete, class: "btn btn-danger" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
+<div class="box">
 
-
-        <%# 冷蔵庫情報 %>
-    <div class= "container">
-      <div class= "row">
-        <%# 冷蔵庫名表示 %>  
-        <% if user_signed_in? && current_user.fridge_id.present? %>
-          <% if current_user.fridge.title.blank? %>
-            <div>
-              <h1 class="text-dark mt-5 fw-bold"><%= current_user.nickname %>さんの冷蔵庫</h1><p>ID:<%= current_user.fridge_id %></p>
-            </div>
-          <% else %>
-            <div>
-              <h1 class="text-dark mt-5 fw-bold"><i class="fa-light fa-cart-shopping"></i><%= current_user.fridge.title %></h1><p>ID:<%= current_user.fridge_id %></p>
+  <div class= "container">
+    <div class= "row">
+      <% if user_signed_in? && current_user.fridge_id.nil? && current_user.request.nil? %>
+        <div class="lead mt-5">冷蔵庫を新規作成してください。共有する場合はその冷蔵庫IDを入力して共有リクエストを送信してください</div>
+          <%= form_with model: @fridge, local: true do |f| %>
+            <div class='col-5 mx-auto mt-3'>
+              <%= f.text_field :title, placeholder: "【冷蔵庫新規作成】冷蔵庫の名前を入力してください", class: 'form-control' %>
+              <%= f.submit "新規作成", class: 'btn btn-primary' %>
             </div>
           <% end %>
+          <%= form_with model: @request, local: true do |f| %>
+            <div class='col-5 mx-auto mt-5'>
+              <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫のIDを入力してください", class: 'form-control' %>
+              <%= f.hidden_field :user_id, value: current_user.id %>
+              <%= f.submit "共有リクエスト", class: 'btn btn-success' %>
+              <%= render 'shared/error_messages', model: f.object %>
+            </div>
+          <% end %>
+      <% elsif user_signed_in? && current_user.request.present? %>
+        <h3 class="mt-5"><%= "現在、冷蔵庫ID: #{current_user.request.fridge_id}の共有リクエストを申請中です" %></h3>
+        <div class='col mx-auto mt-1'>
+          <%= button_to "申請を取り消す", request_path(current_user.request.id), method: :delete, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
-          <%# 通知ボード %>
-          <div class="col-5 mx-auto">
-            <button class="btn btn-primary " type="button" data-bs-toggle="collapse" data-bs-target="#notification" aria-expanded="false" aria-controls="notification">
-              通知を表示 / 非表示
-            </button>
+
+      <%# 冷蔵庫情報 %>
+  <div class= "container">
+    <div class= "row">
+
+      <%# 冷蔵庫名表示 %>  
+      <% if user_signed_in? && current_user.fridge_id.present? %>
+        <% if current_user.fridge.title.blank? %>
+          <div>
+            <h1 class="text-dark mt-5 fw-bold"><%= current_user.nickname %>さんの冷蔵庫</h1><p>ID:<%= current_user.fridge_id %></p>
           </div>
-          <div class="collapse" id="notification">
-            <% if current_user.fridge.requests.present? %>
-              <% current_user.fridge.requests.each do |request| %>
+        <% else %>
+          <div>
+            <h1 class="text-dark mt-5 fw-bold"><i class="fa-light fa-cart-shopping"></i><%= current_user.fridge.title %></h1><p>ID:<%= current_user.fridge_id %></p>
+          </div>
+        <% end %>
+
+        <%# 通知ボード %>
+
+        <button type="button" class="btn btn-primary col-4 mx-auto" data-bs-toggle="modal" data-bs-target="#confirmation">
+          📋 通知ボードを表示する
+        </button>
+
+        <div class="modal fade" id="confirmation" tabindex="-1" aria-labelledby="confirmationLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="confirmationLabel">📋 通知ボード</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <% if current_user.fridge.requests.present? %>
+                  <% current_user.fridge.requests.each do |request| %>
+                    <div class="card">
+                      <div class="card-header fw-bold">
+                        共有リクエスト通知
+                      </div>
+                      <div class="card-body col">
+                        <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
+                        <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
+                        <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% else %>
+                <% end %>
                 <div class="card">
                   <div class="card-header fw-bold">
-                    共有リクエスト通知
+                    賞味/消費期限アラート
                   </div>
                   <div class="card-body col">
-                    <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
-                    <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
-                    <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
+                    <% current_user.fridge.items.each do |item| %>
+                      <div class= mb-1>
+                      <% if item.exp_date.present? %>
+                        <% if item.exp_date == Date.today %>
+                          <%= "🚨 #{item.name}の賞味/賞味期限は今日までです" %>
+                        <% elsif item.exp_date < Date.today %>
+                          <%= "🤮 #{item.name}の賞味/賞味期限が切れています" %>
+                        <% else %>
+                        <% end %>
+                      <% end %>
+                      </div>
+                    <% end %>
                   </div>
                 </div>
-              <% end %>
-            <% else %>
-            <% end %>
-
-            <div class="card">
-              <div class="card-header fw-bold">
-                賞味/消費期限アラート
-              </div>
-              <div class="card-body col">
-                <% current_user.fridge.items.each do |item| %>
-                  <div class= mb-1>
-                  <% if item.exp_date.present? %>
-                    <% if item.exp_date == Date.today %>
-                      <%= "🚨 #{item.name}の賞味/賞味期限は今日までです 🚨" %>
-                    <% elsif item.exp_date < Date.today %>
-                      <%= "🤮 #{item.name}の賞味/賞味期限が切れています 🤮" %>
-                    <% else %>
-                    <% end %>
-                  <% end %>
+                <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
+                  <div class="card">
+                    <div class="card-header fw-bold">
+                      お買い物通知
+                    </div>
+                    <div class="card-body col">
+                      <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
+                    </div>
+                    <div class="card-footer text-muted">
+                      <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
+                    </div>
                   </div>
+                <% else %>
                 <% end %>
               </div>
-            </div>
-
-            <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
-              <div class="card">
-                <div class="card-header fw-bold">
-                  お買い物通知
-                </div>
-                <div class="card-body col">
-                  <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
-                </div>
-                <div class="card-footer text-muted">
-                  <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
-                </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
               </div>
-            <% else %>
-            <% end %>
+            </div>
           </div>
+        </div>
 
-          <%# 共有リクエスト表示 %>
-          
+        <%# 共有リクエスト表示 %>
+        
 
-          <%# 新規アイテム登録フォーム %>
+        <%# 新規アイテム登録フォーム %>
+        <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
+            アイテム登録
+        </h3>
+
+        <%= form_with model: @item, local: true do |f| %>
+
+        <%= render 'shared/error_messages', model: f.object %>
+
+          <table class="table table-hover table-sm text-dark mt-2 ">
+            <thead>
+              <tr>
+                <th scope="col">常備</th>
+                <th scope="col">アイテム名</th>
+                <th scope="col">カテゴリ</th>
+                <th scope="col">残量</th>
+                <th scope="col">賞味/消費期限</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= f.check_box :regular, {checked: true, class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
+                <td><%= f.text_field :name, placeholder: "アイテム名を入力してください", class: 'form-control' %></td>
+                <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
+                <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
+                <td><%= f.date_field :exp_date, class: 'form-control'%></td>
+                <td><%= f.submit "登録", class: 'btn btn-primary' %></td>
+            </tbody>
+          </table>
+        <% end %>
+
+        <%# アイテム編集フォーム %>
+        <div>
           <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-              アイテム登録
+            アイテム一覧
           </h3>
-
-          <%= form_with model: @item, local: true do |f| %>
-
-          <%= render 'shared/error_messages', model: f.object %>
-
-            <table class="table table-hover table-sm text-dark mt-2 ">
-              <thead>
+        </div>
+        <table class="table table-hover table-sm text-dark mt-2 mb-5">
+        <thead>
+          <tr>
+            <th scope="col"><%= sort_link(@q, :regular, "常備" )%></th>
+            <th scope="col"><%= sort_link(@q, :name, "アイテム名" )%></th>
+            <th scope="col"><%= sort_link(@q, :category_id, "カテゴリ" )%></th>
+            <th scope="col"><%= sort_link(@q, :amount_id, "残量" )%></th>
+            <th scope="col"><%= sort_link(@q, :exp_date, "賞味/消費期限" )%></th>
+            <th scope="col">最新購入日</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <% @items.each do |item| %>
+          <tbody>
+            <% if current_user.fridge_id == item.fridge_id %>
+              <%= form_with model: item, local: true do |f| %>
                 <tr>
-                  <th scope="col">常備</th>
-                  <th scope="col">アイテム名</th>
-                  <th scope="col">カテゴリ</th>
-                  <th scope="col">残量</th>
-                  <th scope="col">賞味/消費期限</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><%= f.check_box :regular, {checked: true, class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
-                  <td><%= f.text_field :name, placeholder: "アイテム名を入力してください", class: 'form-control' %></td>
+                  <td><%= f.check_box :regular, {class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
+                  <td><%= f.text_field :name, placeholder: "test", class: 'form-control' %></td>
                   <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
                   <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
                   <td><%= f.date_field :exp_date, class: 'form-control'%></td>
-                  <td><%= f.submit "登録", class: 'btn btn-primary' %></td>
-              </tbody>
-            </table>
-          <% end %>
-
-          <%# アイテム編集フォーム %>
-          <div>
-            <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-              アイテム一覧
-            </h3>
-          </div>
-          <table class="table table-hover table-sm text-dark mt-2 mb-5">
-          <thead>
-            <tr>
-              <th scope="col"><%= sort_link(@q, :regular, "常備" )%></th>
-              <th scope="col"><%= sort_link(@q, :name, "アイテム名" )%></th>
-              <th scope="col"><%= sort_link(@q, :category_id, "カテゴリ" )%></th>
-              <th scope="col"><%= sort_link(@q, :amount_id, "残量" )%></th>
-              <th scope="col"><%= sort_link(@q, :exp_date, "賞味/消費期限" )%></th>
-              <th scope="col">最新購入日</th>
-              <th scope="col"></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <% @items.each do |item| %>
-            <tbody>
-              <% if current_user.fridge_id == item.fridge_id %>
-                <%= form_with model: item, local: true do |f| %>
-                  <tr>
-                    <td><%= f.check_box :regular, {class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
-                    <td><%= f.text_field :name, placeholder: "test", class: 'form-control' %></td>
-                    <td><%= f.collection_select(:category_id, Category.all, :id, :name, {}, {class:"form-control"}) %></td>
-                    <td><%= f.collection_select(:amount_id, Amount.all, :id, :name, {}, {class:"form-control"}) %></td>
-                    <td><%= f.date_field :exp_date, class: 'form-control'%></td>
-                    <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
-                    <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
-                    <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】このアイテムを削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
-                  </tr>
-                <% end %>
-              <% else %>
+                  <td class="fw-bold"><%= item.latest_shopping_date if item.shoppings.present? %></td>
+                  <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
+                  <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】#{item.name}を本当に削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
+                </tr>
               <% end %>
-            </tbody>
-          <% end %>
-          </table>
+            <% else %>
+            <% end %>
+          </tbody>
         <% end %>
-        <%# /冷蔵庫アイテム一覧 %>
-      </div>
+        </table>
+      <% end %>
+      <%# /冷蔵庫アイテム一覧 %>
     </div>
   </div>
 </div>
