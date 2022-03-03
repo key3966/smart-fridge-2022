@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_18_081627) do
+ActiveRecord::Schema.define(version: 2022_03_03_081226) do
 
   create_table "fridges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2022_02_18_081627) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["fridge_id"], name: "index_items_on_fridge_id"
+  end
+
+  create_table "losses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.date "loss_date", null: false
+    t.bigint "fridge_id", null: false
+    t.bigint "item_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["fridge_id"], name: "index_losses_on_fridge_id"
+    t.index ["item_id"], name: "index_losses_on_item_id"
   end
 
   create_table "requests", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -76,6 +86,8 @@ ActiveRecord::Schema.define(version: 2022_02_18_081627) do
   end
 
   add_foreign_key "items", "fridges"
+  add_foreign_key "losses", "fridges"
+  add_foreign_key "losses", "items"
   add_foreign_key "requests", "fridges"
   add_foreign_key "requests", "users"
   add_foreign_key "shopping_items", "items"
