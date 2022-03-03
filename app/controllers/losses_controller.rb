@@ -3,12 +3,16 @@ class LossesController < ApplicationController
 
   def create
     @loss_items = LossItems.new(loss_params)
-    @loss_items.save
-    redirect_to root_path
+    if @loss_items.valid?
+      @loss_items.save
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
   end
 
   private
   def loss_params
-    params.require(:loss_items).permit(:loss_date, :fridge_id, :item_id)
+    params.permit(:loss_date, :fridge_id, :item_id, :amount_id)
   end
 end
