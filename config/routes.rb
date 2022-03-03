@@ -7,4 +7,5 @@ Rails.application.routes.draw do
   end
   resources :items, only: [:create, :update, :destroy]
   resources :requests, only: [:create, :update, :destroy]
+  resources :losses, only: :create
 end
