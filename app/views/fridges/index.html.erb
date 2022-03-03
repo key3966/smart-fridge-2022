@@ -167,6 +167,7 @@
             <th scope="col">最新購入日</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <% @items.each do |item| %>
@@ -181,6 +182,7 @@
                   <td><%= f.date_field :exp_date, class: 'form-control'%></td>
                   <td class="fw-bold"><%= item.latest_shopping_date if item.shoppings.present? %></td>
                   <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
+                  <td><%= link_to "ロス", losses_path(loss_date: Date.today, fridge_id: item.fridge_id, item_id: item.id, amount_id: item.amount.id), method: :post, class: 'btn btn-secondary' %></td>
                   <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】#{item.name}を本当に削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
                 </tr>
               <% end %>
