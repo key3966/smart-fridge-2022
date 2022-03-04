@@ -29,7 +29,7 @@
   </div>
 
 
-      <%# 冷蔵庫情報 %>
+  <%# 冷蔵庫情報 %>
   <div class= "container">
     <div class= "row">
 
@@ -45,78 +45,30 @@
           </div>
         <% end %>
 
-        <%# 通知ボード %>
-
-        <button type="button" class="btn btn-primary col-4 mx-auto" data-bs-toggle="modal" data-bs-target="#confirmation">
-          📋 通知ボードを表示する
-        </button>
-
-        <div class="modal fade" id="confirmation" tabindex="-1" aria-labelledby="confirmationLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="confirmationLabel">📋 通知ボード</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <% if current_user.fridge.requests.present? %>
-                  <% current_user.fridge.requests.each do |request| %>
-                    <div class="card">
-                      <div class="card-header fw-bold">
-                        共有リクエスト通知
-                      </div>
-                      <div class="card-body col">
-                        <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
-                        <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
-                        <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
-                      </div>
-                    </div>
-                  <% end %>
-                <% else %>
-                <% end %>
-                <div class="card">
-                  <div class="card-header fw-bold">
-                    賞味/消費期限アラート
-                  </div>
-                  <div class="card-body col">
-                    <% current_user.fridge.items.each do |item| %>
-                      <div class= mb-1>
-                      <% if item.exp_date.present? %>
-                        <% if item.exp_date == Date.today %>
-                          <%= "🚨 #{item.name}の賞味/賞味期限は今日までです" %>
-                        <% elsif item.exp_date < Date.today %>
-                          <%= "🤮 #{item.name}の賞味/賞味期限が切れています" %>
-                        <% else %>
-                        <% end %>
-                      <% end %>
-                      </div>
-                    <% end %>
-                  </div>
-                </div>
-                <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
-                  <div class="card">
-                    <div class="card-header fw-bold">
-                      お買い物通知
-                    </div>
-                    <div class="card-body col">
-                      <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
-                    </div>
-                    <div class="card-footer text-muted">
-                      <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
-                    </div>
-                  </div>
-                <% else %>
-                <% end %>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <%# 共有リクエスト表示 %>
+        <%# フードロス率 %>
+        <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
+            フードロス率
+        </h3>
         
+        <% monthly_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(1.month)..).count %>
+        <% monthly_shopping_items = 0 %>
+        <% current_user.fridge.shoppings.each do |shopping| %>
+          <% shopping.shopping_items.each do |shopping_item| %>
+            <% if Date.today.ago(1.month) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
+              <% monthly_shopping_items += 1 %>
+            <% else %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <% monthly_losses_ratio = ((monthly_losses.to_f / monthly_shopping_items.to_f) * 100).round(2) %>
+
+        <h6 class="text-dark fw-bold mt-3">
+            過去1ヶ月間
+        </h6>
+        <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
+          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - monthly_losses_ratio %>%" aria-valuenow="<%= 100 - monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= monthly_losses_ratio %>%" aria-valuenow="<%= monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= monthly_losses_ratio %>%</div>
+        </div>
 
         <%# 新規アイテム登録フォーム %>
         <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
@@ -127,7 +79,7 @@
 
         <%= render 'shared/error_messages', model: f.object %>
 
-          <table class="table table-hover table-sm text-dark mt-2 ">
+          <table class="table table-hover table-sm table-borderless text-dark mt-2 ">
             <thead>
               <tr>
                 <th scope="col">常備</th>
@@ -156,7 +108,7 @@
             アイテム一覧
           </h3>
         </div>
-        <table class="table table-hover table-sm text-dark mt-2 mb-5">
+        <table class="table table-hover table-sm table-borderless text-dark mt-2 mb-5">
         <thead>
           <tr>
             <th scope="col"><%= sort_link(@q, :regular, "常備" )%></th>
@@ -182,8 +134,8 @@
                   <td><%= f.date_field :exp_date, class: 'form-control'%></td>
                   <td class="fw-bold"><%= item.latest_shopping_date if item.shoppings.present? %></td>
                   <td><%= f.submit "更新", class: 'btn btn-warning' %></td>
-                  <td><%= link_to "ロス", losses_path(loss_date: Date.today, fridge_id: item.fridge_id, item_id: item.id, amount_id: item.amount.id), method: :post, class: 'btn btn-secondary' %></td>
-                  <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】#{item.name}を本当に削除してもよろしいですか？" }, class: 'btn btn-danger' %></td>
+                  <td><%= link_to "ロス", losses_path(loss_date: Date.today, fridge_id: item.fridge_id, item_id: item.id, amount_id: item.amount.id), method: :post, class: 'btn btn-danger' unless item.category_id == 5 %></td>
+                  <td><%= link_to "削除", item_path(item.id), method: :delete, data: { confirm: "【確認】#{item.name}を本当に削除してもよろしいですか？" }, class: 'btn btn-secondary' %></td>
                 </tr>
               <% end %>
             <% else %>
@@ -192,7 +144,6 @@
         <% end %>
         </table>
       <% end %>
-      <%# /冷蔵庫アイテム一覧 %>
     </div>
   </div>
 </div>
