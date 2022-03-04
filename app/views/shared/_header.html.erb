@@ -1,42 +1,110 @@
-    <header>
-      <div class="collapse bg-dark" id="navbarHeader">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-8 col-md-7 py-4">
-              <h4 class="text-white">About</h4>
-              <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
-            </div>
-            <div class="col-sm-4 offset-md-1 py-4">
-              <h4 class="text-white">Contact</h4>
-              <ul class="list-unstyled">
-                <li><a href="#" class="text-white">Follow on Twitter</a>
-                <li><a href="#" class="text-white">Like on Facebook</a>
-                <li><a href="#" class="text-white">Email me</a>
-              </ul>
-            </div>
-          </div>
+<header>
+  <div class="collapse bg-dark" id="navbarHeader">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+          <h4 class="text-white">About</h4>
+          <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+        </div>
+        <div class="col-sm-4 offset-md-1 py-4">
+          <h4 class="text-white">Contact</h4>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-white">Follow on Twitter</a>
+            <li><a href="#" class="text-white">Like on Facebook</a>
+            <li><a href="#" class="text-white">Email me</a>
+          </ul>
         </div>
       </div>
-      <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container">
-          <a href="/" class="navbar-brand d-flex align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-egg" viewBox="0 0 16 16"><path d="M8 15a5 5 0 0 1-5-5c0-1.956.69-4.286 1.742-6.12.524-.913 1.112-1.658 1.704-2.164C7.044 1.206 7.572 1 8 1c.428 0 .956.206 1.554.716.592.506 1.18 1.251 1.704 2.164C12.31 5.714 13 8.044 13 10a5 5 0 0 1-5 5zm0 1a6 6 0 0 0 6-6c0-4.314-3-10-6-10S2 5.686 2 10a6 6 0 0 0 6 6z"/></svg>
-            <strong>Smart Fridge</strong>
-          </a>
-          <div class="text-end">
-              <% if user_signed_in? && current_user.fridge_id.present? %>
-                <%= link_to "お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-outline-primary me-2" %>
-                <%= link_to 'ログアウト', destroy_user_session_path, class: "btn btn-outline-light me-2", method: :delete %>
-              <% elsif user_signed_in? %>
-                <%= link_to 'ログアウト', destroy_user_session_path, class: "btn btn-outline-light me-2", method: :delete %>
-              <% else %>
-                <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-light me-2" %>
-                <%= link_to '新規登録', new_user_registration_path, class: "btn btn-warning" %>
-              <% end %>
-          </div>
-          <!-- button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button-->
-        </div>
+    </div>
+  </div>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a href="/" class="navbar-brand d-flex align-items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-egg" viewBox="0 0 16 16"><path d="M8 15a5 5 0 0 1-5-5c0-1.956.69-4.286 1.742-6.12.524-.913 1.112-1.658 1.704-2.164C7.044 1.206 7.572 1 8 1c.428 0 .956.206 1.554.716.592.506 1.18 1.251 1.704 2.164C12.31 5.714 13 8.044 13 10a5 5 0 0 1-5 5zm0 1a6 6 0 0 0 6-6c0-4.314-3-10-6-10S2 5.686 2 10a6 6 0 0 0 6 6z"/></svg>
+        <strong>Smart Fridge</strong>
+      </a>
+      <div class="text-end">
+          <% if user_signed_in? && current_user.fridge_id.present? %>
+            <%# 通知ボード %>
+
+            <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#confirmation">
+              📋 通知ボードを表示
+            </button>
+            <div class="modal fade" id="confirmation" tabindex="-1" aria-labelledby="confirmationLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="confirmationLabel">📋 通知ボード</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body text-center">
+                    <% if current_user.fridge.requests.present? %>
+                      <% current_user.fridge.requests.each do |request| %>
+                        <div class="card">
+                          <div class="card-header fw-bold">
+                            共有リクエスト通知
+                          </div>
+                          <div class="card-body col">
+                            <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
+                            <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
+                            <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
+                          </div>
+                        </div>
+                      <% end %>
+                    <% else %>
+                    <% end %>
+                    <div class="card">
+                      <div class="card-header fw-bold">
+                        賞味/消費期限アラート
+                      </div>
+                      <div class="card-body col">
+                        <% current_user.fridge.items.each do |item| %>
+                          <div class= mb-1>
+                          <% if item.exp_date.present? && item.amount_id != 1 %>
+                            <% if item.exp_date == Date.today %>
+                              <%= "🚨 #{item.name}の賞味/賞味期限は今日までです" %>
+                            <% elsif item.exp_date < Date.today %>
+                              <%= "🤮 #{item.name}の賞味/賞味期限が切れています" %>
+                            <% else %>
+                            <% end %>
+                          <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                    <% if current_user.fridge.shoppings.where.not(user_id: current_user.id).present? %>
+                      <div class="card">
+                        <div class="card-header fw-bold">
+                          お買い物通知
+                        </div>
+                        <div class="card-body col">
+                          <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
+                        </div>
+                        <div class="card-footer text-muted">
+                          <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
+                        </div>
+                      </div>
+                    <% else %>
+                    <% end %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%= link_to "🛒 お買い物に行く", fridge_shoppings_path(current_user.fridge_id), class: "btn btn-outline-success me-2" %>
+            <%= link_to 'ログアウト', destroy_user_session_path, class: "btn btn-outline-light me-2", method: :delete %>
+          <% elsif user_signed_in? %>
+            <%= link_to 'ログアウト', destroy_user_session_path, class: "btn btn-outline-light me-2", method: :delete %>
+          <% else %>
+            <%= link_to 'ログイン', new_user_session_path, class: "btn btn-outline-light me-2" %>
+            <%= link_to '新規登録', new_user_registration_path, class: "btn btn-warning" %>
+          <% end %>
       </div>
-    </header>
+      <!-- button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button-->
+    </div>
+  </div>
+</header>
