@@ -63,7 +63,7 @@
         <% monthly_losses_ratio = ((monthly_losses.to_f / monthly_shopping_items.to_f) * 100).round(2) %>
 
         <h6 class="text-dark fw-bold mt-3">
-            過去1ヶ月間
+            過去1ヶ月
         </h6>
         <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
           <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - monthly_losses_ratio %>%" aria-valuenow="<%= 100 - monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
