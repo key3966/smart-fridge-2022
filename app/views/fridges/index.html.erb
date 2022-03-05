@@ -7,14 +7,14 @@
       <% if user_signed_in? && current_user.fridge_id.nil? && current_user.request.nil? %>
         <div class="lead mt-5">冷蔵庫を新規作成してください。共有する場合はその冷蔵庫IDを入力して共有リクエストを送信してください</div>
           <%= form_with model: @fridge, local: true do |f| %>
-            <div class='col-5 mx-auto mt-3'>
+            <div class='col-6 mx-auto mt-3'>
               <%= f.text_field :title, placeholder: "【冷蔵庫新規作成】冷蔵庫の名前を入力してください", class: 'form-control' %>
               <%= f.submit "新規作成", class: 'btn btn-primary' %>
             </div>
           <% end %>
           <%= form_with model: @request, local: true do |f| %>
-            <div class='col-5 mx-auto mt-5'>
-              <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫のIDを入力してください", class: 'form-control' %>
+            <div class='col-6 mx-auto mt-5'>
+              <%= f.number_field :fridge_id, placeholder: "【冷蔵庫共有】共有したい冷蔵庫IDを入力してください", class: 'form-control' %>
               <%= f.hidden_field :user_id, value: current_user.id %>
               <%= f.submit "共有リクエスト", class: 'btn btn-success' %>
               <%= render 'shared/error_messages', model: f.object %>
@@ -47,85 +47,86 @@
         <% end %>
 
         <%# フードロス率 %>
-        <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
-            フードロス率
-        </h3>
-        
-        <%# フードロス率計算 %>
-        <% monthly_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(1.month)..).count %>
-        <% monthly_shopping_items = 0 %>
-        <% current_user.fridge.shoppings.each do |shopping| %>
-          <% shopping.shopping_items.each do |shopping_item| %>
-            <% if Date.today.ago(1.month) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
-              <% monthly_shopping_items += 1 %>
+        <% if current_user.fridge.losses.present? && current_user.fridge.shoppings.present? %>
+          <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
+              フードロス率
+          </h3>
+          
+          <%# フードロス率計算 %>
+          <% monthly_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(1.month)..).count %>
+          <% monthly_shopping_items = 0 %>
+          <% current_user.fridge.shoppings.each do |shopping| %>
+            <% shopping.shopping_items.each do |shopping_item| %>
+              <% if Date.today.ago(1.month) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
+                <% monthly_shopping_items += 1 %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-        <% monthly_losses_ratio = ((monthly_losses.to_f / monthly_shopping_items.to_f) * 100).round(2) %>
+          <% monthly_losses_ratio = ((monthly_losses.to_f / monthly_shopping_items.to_f) * 100).round(2) %>
 
-        <% three_months_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(3.month)..).count %>
-        <% three_months_shopping_items = 0 %>
-        <% current_user.fridge.shoppings.each do |shopping| %>
-          <% shopping.shopping_items.each do |shopping_item| %>
-            <% if Date.today.ago(3.month) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
-              <% three_months_shopping_items += 1 %>
+          <% three_months_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(3.month)..).count %>
+          <% three_months_shopping_items = 0 %>
+          <% current_user.fridge.shoppings.each do |shopping| %>
+            <% shopping.shopping_items.each do |shopping_item| %>
+              <% if Date.today.ago(3.month) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
+                <% three_months_shopping_items += 1 %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-        <% three_months_losses_ratio = ((three_months_losses.to_f / three_months_shopping_items.to_f) * 100).round(2) %>
+          <% three_months_losses_ratio = ((three_months_losses.to_f / three_months_shopping_items.to_f) * 100).round(2) %>
 
-        <% six_months_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(6.months)..).count %>
-        <% six_months_shopping_items = 0 %>
-        <% current_user.fridge.shoppings.each do |shopping| %>
-          <% shopping.shopping_items.each do |shopping_item| %>
-            <% if Date.today.ago(6.months) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
-              <% six_months_shopping_items += 1 %>
+          <% six_months_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(6.months)..).count %>
+          <% six_months_shopping_items = 0 %>
+          <% current_user.fridge.shoppings.each do |shopping| %>
+            <% shopping.shopping_items.each do |shopping_item| %>
+              <% if Date.today.ago(6.months) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
+                <% six_months_shopping_items += 1 %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-        <% six_months_losses_ratio = ((six_months_losses.to_f / six_months_shopping_items.to_f) * 100).round(2) %>
+          <% six_months_losses_ratio = ((six_months_losses.to_f / six_months_shopping_items.to_f) * 100).round(2) %>
 
-        <% year_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(1.year)..).count %>
-        <% year_shopping_items = 0 %>
-        <% current_user.fridge.shoppings.each do |shopping| %>
-          <% shopping.shopping_items.each do |shopping_item| %>
-            <% if Date.today.ago(1.year) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
-              <% year_shopping_items += 1 %>
+          <% year_losses = current_user.fridge.losses.where(loss_date: Date.today.ago(1.year)..).count %>
+          <% year_shopping_items = 0 %>
+          <% current_user.fridge.shoppings.each do |shopping| %>
+            <% shopping.shopping_items.each do |shopping_item| %>
+              <% if Date.today.ago(1.year) < shopping_item.created_at && shopping_item.item.category_id != 5 %>
+                <% year_shopping_items += 1 %>
+              <% end %>
             <% end %>
           <% end %>
-        <% end %>
-        <% year_losses_ratio = ((year_losses.to_f / year_shopping_items.to_f) * 100).round(2) %>
+          <% year_losses_ratio = ((year_losses.to_f / year_shopping_items.to_f) * 100).round(2) %>
 
-        <%# プログレスバー表示 %>
-        <h6 class="text-dark fw-bold mt-3">過去1ヶ月間</h6>
-        <div class="progress mt-2 mb-3" style="height: 1.5rem;" >
-          <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - monthly_losses_ratio %>%" aria-valuenow="<%= 100 - monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= monthly_losses_ratio %>%" aria-valuenow="<%= monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= monthly_losses_ratio %>%</div>
-        </div>
+          <%# プログレスバー表示 %>
+          <h6 class="text-dark fw-bold mt-3">過去1ヶ月間</h6>
+          <div class="progress mt-2 mb-3" style="height: 1.5rem;" >
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - monthly_losses_ratio %>%" aria-valuenow="<%= 100 - monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= monthly_losses_ratio %>%" aria-valuenow="<%= monthly_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= monthly_losses_ratio %>%</div>
+          </div>
 
-        <button class="btn btn-outline-primary col-2 mx-auto btn-sm dropdown-toggle mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMore" aria-expanded="false" aria-controls="collapseMore">
-          もっと見る
-        </button>
-        <div class="collapse" id="collapseMore">
-          <div class="card card-body">
-            <h6 class="text-dark fw-bold mt-3">過去3ヶ月間</h6>
-            <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
-              <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - three_months_losses_ratio %>%" aria-valuenow="<%= 100 - three_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= three_months_losses_ratio %>%" aria-valuenow="<%= three_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= three_months_losses_ratio %>%</div>
-            </div>
-            <h6 class="text-dark fw-bold mt-3">過去6ヶ月間</h6>
-            <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
-              <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - six_months_losses_ratio %>%" aria-valuenow="<%= 100 - six_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= six_months_losses_ratio %>%" aria-valuenow="<%= six_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= six_months_losses_ratio %>%</div>
-            </div>
-            <h6 class="text-dark fw-bold mt-3">過去1年間</h6>
-            <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
-              <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - year_losses_ratio %>%" aria-valuenow="<%= 100 - year_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
-              <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= year_losses_ratio %>%" aria-valuenow="<%= year_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= year_losses_ratio %>%</div>
+          <button class="btn btn-outline-primary col-2 mx-auto btn-sm dropdown-toggle mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMore" aria-expanded="false" aria-controls="collapseMore">
+            もっと見る
+          </button>
+          <div class="collapse" id="collapseMore">
+            <div class="card card-body">
+              <h6 class="text-dark fw-bold mt-3">過去3ヶ月間</h6>
+              <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - three_months_losses_ratio %>%" aria-valuenow="<%= 100 - three_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= three_months_losses_ratio %>%" aria-valuenow="<%= three_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= three_months_losses_ratio %>%</div>
+              </div>
+              <h6 class="text-dark fw-bold mt-3">過去6ヶ月間</h6>
+              <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - six_months_losses_ratio %>%" aria-valuenow="<%= 100 - six_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= six_months_losses_ratio %>%" aria-valuenow="<%= six_months_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= six_months_losses_ratio %>%</div>
+              </div>
+              <h6 class="text-dark fw-bold mt-3">過去1年間</h6>
+              <div class="progress mt-2 mb-3 " style="height: 1.5rem;" >
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%= 100 - year_losses_ratio %>%" aria-valuenow="<%= 100 - year_losses_ratio %>" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: <%= year_losses_ratio %>%" aria-valuenow="<%= year_losses_ratio %>" aria-valuemin="0" aria-valuemax="100">フードロス<%= year_losses_ratio %>%</div>
+              </div>
             </div>
           </div>
-        </div>
-
+        <% end %>
         <%# 新規アイテム登録フォーム %>
         <h3 class="text-dark mt-5 border-bottom border-dark fw-bold">
             アイテム登録
