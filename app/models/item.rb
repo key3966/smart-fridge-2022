@@ -5,6 +5,7 @@ class Item < ApplicationRecord
   belongs_to :fridge
   has_many :shopping_items, dependent: :destroy
   has_many :shoppings, through: :shopping_items
+  has_many :losses
 
   #validate :exp_date_check #今は必要かわからないのでコメントアウト 2022/02/17
 
