@@ -4,7 +4,6 @@ class FridgesController < ApplicationController
     @fridge = Fridge.new
     @item = Item.new
     @request = Request.new
-    @loss_items = LossItems.new
     @q = Item.ransack(params[:q])
     @q.sorts = ['amount_id desc', 'category_id asc', 'exp_date asc', 'regular desc']
     @items = @q.result(distinct: true)
