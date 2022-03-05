@@ -99,7 +99,7 @@
                         お買い物通知
                       </div>
                       <div class="card-body col">
-                        <%= "【#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}がお買い物をしました】" %>
+                        <%= "【#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました】" %>
                       </div>
                       <div class="card-footer text-muted">
                         <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>

@@ -19,8 +19,8 @@
               <tr>
                 <th scope="col">購入</th>
                 <th scope="col">アイテム名</th>
-                <th scope="col">カテゴリ</th>
                 <th scope="col">残量</th>
+                <th scope="col">カテゴリ</th>
                 <th scope="col">賞味/消費期限</th>
                 <th scope="col">最新購入日</th>
               </tr>
@@ -31,8 +31,8 @@
                   <tr class="table-light">
                     <td><%= f.check_box :shopping_item_ids, { multiple: true}, item.id, nil %></td>
                     <td><%= item.name %></td>
-                    <td><%= item.category.name %></td>
                     <td><%= item.amount.name %></td>
+                    <td><%= item.category.name %></td>
                     <td><%= item.exp_date %></td>
                     <td><%= item.latest_shopping_date if item.shoppings.present? %></td>
                   </tr>
