@@ -67,7 +67,7 @@
                           共有リクエスト通知
                         </div>
                         <div class="card-body col">
-                          <p><%= "#{request.user.nickname}さんから共有リクエストが届いています" %></p>
+                          <p><%= "【#{request.user.nickname}さんから共有リクエストが届いています】" %></p>
                           <%= link_to "リクエストを承認", request_path(request.id), method: :patch, class: "btn btn-outline-primary" %>
                           <%= link_to "リクエストを拒否", request_path(request.id), method: :delete, data: { confirm: "本当にこの共有リクエストを拒否しますか？" }, class: "btn btn-outline-danger" %>
                         </div>
@@ -84,9 +84,9 @@
                         <div class= mb-1>
                         <% if item.exp_date.present? && item.amount_id != 1 %>
                           <% if item.exp_date == Date.today %>
-                            <%= "🚨 #{item.name}の賞味/賞味期限は今日までです" %>
+                            <%= "🚨【#{item.name}の賞味/賞味期限は今日までです】🚨" %>
                           <% elsif item.exp_date < Date.today %>
-                            <%= "🤮 #{item.name}の賞味/賞味期限が切れています" %>
+                            <%= "🤮【#{item.name}の賞味/賞味期限が切れています】🤮" %>
                           <% end %>
                         <% end %>
                         </div>
@@ -99,7 +99,7 @@
                         お買い物通知
                       </div>
                       <div class="card-body col">
-                        <%= "#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}さんがお買い物をしました" %>
+                        <%= "【#{current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.user.nickname}がお買い物をしました】" %>
                       </div>
                       <div class="card-footer text-muted">
                         <%= "#{time_ago_in_words(current_user.fridge.shoppings.where.not(user_id: current_user.id).order(created_at: :desc).first.shopping_date)} ago" %>
