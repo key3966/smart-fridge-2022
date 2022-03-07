@@ -1,10 +1,10 @@
 class ShoppingsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_items, only: [:index, :create]
   before_action :set_fridge, only: [:index, :create]
   before_action :same_fridge?, only: [:index, :create]
 
   def index
-    @items = Item.order('amount_id asc', 'category_id asc', 'regular desc', 'exp_date asc')
     @shopping_form = ShoppingForm.new
   end
 
@@ -22,6 +22,10 @@ class ShoppingsController < ApplicationController
 
   def shopping_params
     params.require(:shopping_form).permit(:shopping_date, shopping_item_ids:[]).merge(fridge_id: params[:fridge_id], user_id: current_user.id)
+  end
+
+  def set_items
+    @items = Item.order('amount_id asc', 'category_id asc', 'regular desc', 'exp_date asc')
   end
 
   def set_fridge
