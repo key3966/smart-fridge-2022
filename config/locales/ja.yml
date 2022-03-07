@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        nickname: ニックネーム
+        gender: 性別
+        birthday: 誕生日
+      item:
+        name: アイテム名
+        category_id: カテゴリ
+        amount_id: 残量
+      shopping_form:
+        shopping_item_ids: 購入商品
