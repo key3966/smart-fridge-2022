@@ -16,17 +16,17 @@ RSpec.describe Request, type: :model do
       it '冷蔵庫IDが入力されていなければリクエストができない' do
         @request.fridge_id = ''
         @request.valid?
-        expect(@request.errors.full_messages).to include("Fridge can't be blank")
+        expect(@request.errors.full_messages).to include("冷蔵庫IDを入力してください")
       end
       it '存在する冷蔵庫のIDでない限りリクエストができない' do
         @request.fridge_id = '999999999999999999999'
         @request.valid?
-        expect(@request.errors.full_messages).to include('Fridge must exist')
+        expect(@request.errors.full_messages).to include('冷蔵庫IDを入力してください')
       end
       it 'ユーザーが紐づいてなければリクエストができない' do
         @request.user = nil
         @request.valid?
-        expect(@request.errors.full_messages).to include('User must exist')
+        expect(@request.errors.full_messages).to include('Userを入力してください')
       end
     end 
   end

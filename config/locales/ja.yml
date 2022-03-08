@@ -9,6 +9,9 @@ ja:
         name: アイテム名
         category_id: カテゴリ
         amount_id: 残量
+      request:
+        fridge_id: 冷蔵庫ID
+        fridge: 冷蔵庫ID
   activemodel:
     attributes:
       shopping_form:
