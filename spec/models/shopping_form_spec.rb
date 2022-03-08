@@ -22,22 +22,22 @@ RSpec.describe ShoppingForm, type: :model do
       it '日付を入力しないと買い物できない' do
         @shopping_form.shopping_date = nil
         @shopping_form.valid?
-        expect(@shopping_form.errors.full_messages).to include("Shopping date can't be blank")
+        expect(@shopping_form.errors.full_messages).to include("購入日を入力してください")
       end
       it 'アイテムに一つもチェック入っていないと買い物できない' do
         @shopping_form.shopping_item_ids = nil
         @shopping_form.valid?
-        expect(@shopping_form.errors.full_messages).to include("Shopping item ids can't be blank")
+        expect(@shopping_form.errors.full_messages).to include("最低一つ以上の購入商品を選択してください")
       end
       it '冷蔵庫が紐付いてなければ購入できない' do
         @shopping_form.fridge_id = nil
         @shopping_form.valid?
-        expect(@shopping_form.errors.full_messages).to include("Fridge can't be blank")
+        expect(@shopping_form.errors.full_messages).to include("Fridgeを入力してください")
       end
       it 'ユーザーが紐付いてなければ購入できない' do
         @shopping_form.user_id = nil
         @shopping_form.valid?
-        expect(@shopping_form.errors.full_messages).to include("User can't be blank")
+        expect(@shopping_form.errors.full_messages).to include("Userを入力してください")
       end
     end
   end
