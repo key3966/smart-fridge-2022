@@ -9,5 +9,14 @@ ja:
         name: アイテム名
         category_id: カテゴリ
         amount_id: 残量
+  activemodel:
+    attributes:
       shopping_form:
         shopping_item_ids: 購入商品
+    errors:
+      models:
+        shopping_form:
+          attributes:
+            shopping_item_ids: 
+              format: '%{message}'
+              blank: 最低一つ以上の%{attribute}を選択してください
