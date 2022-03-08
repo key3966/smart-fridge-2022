@@ -13,6 +13,7 @@ ja:
     attributes:
       shopping_form:
         shopping_item_ids: 購入商品
+        shopping_date: 購入日
     errors:
       models:
         shopping_form:
