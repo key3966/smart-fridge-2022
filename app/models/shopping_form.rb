@@ -1,5 +1,4 @@
 class ShoppingForm
-
   include ActiveModel::Model
   attr_accessor :shopping_date, :fridge_id, :user_id, :shopping_item_ids
 

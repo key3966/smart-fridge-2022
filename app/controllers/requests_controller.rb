@@ -41,9 +41,11 @@ class RequestsController < ApplicationController
     @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
     @items = @q.result(distinct: true)
     render template: 'fridges/index'
-  end 
+  end
 
   def same_fridge?
-    redirect_to root_path unless @request.fridge_id == current_user.fridge_id || @request.fridge_id == current_user.request.fridge_id
+    unless @request.fridge_id == current_user.fridge_id || @request.fridge_id == current_user.request.fridge_id
+      redirect_to root_path
+    end
   end
 end

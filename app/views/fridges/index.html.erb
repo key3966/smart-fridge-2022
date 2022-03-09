@@ -185,7 +185,7 @@
               <%= form_with model: item, local: true do |f| %>
                 <tr>
                   <td><%= f.check_box :regular, {class: "form-check-input", type: "checkbox", id: "checkboxNoLabel" }, "1", "0" %></td>
-                  <td><%= f.text_field :name, placeholder: "test", class: 'form-control' %></td>
+                  <td><%= f.text_field :name, placeholder: "アイテム名を入力してください", class: 'form-control' %></td>
                   <td><%= f.collection_select(:amount_id, Amount.where.not(id: 0), :id, :name, {}, {class:"form-control"}) %></td>
                   <td><%= f.collection_select(:category_id, Category.where.not(id: 0), :id, :name, {}, {class:"form-control"}) %></td>
                   <td><%= f.date_field :exp_date, class: 'form-control'%></td>

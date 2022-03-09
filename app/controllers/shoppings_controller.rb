@@ -21,7 +21,8 @@ class ShoppingsController < ApplicationController
   private
 
   def shopping_params
-    params.require(:shopping_form).permit(:shopping_date, shopping_item_ids:[]).merge(fridge_id: params[:fridge_id], user_id: current_user.id)
+    params.require(:shopping_form).permit(:shopping_date, shopping_item_ids: []).merge(fridge_id: params[:fridge_id],
+                                                                                       user_id: current_user.id)
   end
 
   def set_items

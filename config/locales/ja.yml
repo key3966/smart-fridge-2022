@@ -1,0 +1,26 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        nickname: ニックネーム
+        gender: 性別
+        birthday: 誕生日
+      item:
+        name: アイテム名
+        category_id: カテゴリ
+        amount_id: 残量
+      request:
+        fridge_id: 冷蔵庫ID
+        fridge: 冷蔵庫ID
+  activemodel:
+    attributes:
+      shopping_form:
+        shopping_item_ids: 購入商品
+        shopping_date: 購入日
+    errors:
+      models:
+        shopping_form:
+          attributes:
+            shopping_item_ids: 
+              format: '%{message}'
+              blank: 最低一つ以上の%{attribute}を選択してください
