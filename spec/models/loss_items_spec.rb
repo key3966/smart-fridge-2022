@@ -20,31 +20,31 @@ RSpec.describe LossItem, type: :model do
       it '日付が入っていないと登録できない' do
         @loss_item.loss_date = nil
         @loss_item.valid?
-        expect(@loss_item.errors.full_messages).to include("Loss date can't be blank")
+        expect(@loss_item.errors.full_messages).to include("Loss dateを入力してください")
       end
 
       it '冷蔵庫が紐づいていなければ登録できない' do 
         @loss_item.fridge_id = nil
         @loss_item.valid?
-        expect(@loss_item.errors.full_messages).to include("Fridge can't be blank")
+        expect(@loss_item.errors.full_messages).to include("Fridgeを入力してください")
       end
 
       it 'アイテムが紐づいていなければ登録できない' do 
         @loss_item.item_id = nil
         @loss_item.valid?
-        expect(@loss_item.errors.full_messages).to include("Item can't be blank")
+        expect(@loss_item.errors.full_messages).to include("Itemを入力してください")
       end
       
       it '日用品はロスにできない' do
         @loss_item.category_id = 5
         @loss_item.valid?
-        expect(@loss_item.errors.full_messages).to include("Category is can't be loss")
+        expect(@loss_item.errors.full_messages).to include("Categoryis can't be loss")
       end
 
       it '残量がなければロスにできない' do
         @loss_item.amount_id = 1
         @loss_item.valid?
-        expect(@loss_item.errors.full_messages).to include("Amount is nothing")
+        expect(@loss_item.errors.full_messages).to include("Amountis nothing")
       end
     end
   end
