@@ -24,23 +24,23 @@ RSpec.describe Item, type: :model do
       it 'nameが空では登録できない' do
         @item.name = ''
         @item.valid?
-        expect(@item.errors.full_messages).to include("アイテム名を入力してください")
+        expect(@item.errors.full_messages).to include('アイテム名を入力してください')
       end
       it 'カテゴリーを選択しなければ登録できない' do
         @item.category_id = '0'
         @item.valid?
-        expect(@item.errors.full_messages).to include("カテゴリを選択してください")
+        expect(@item.errors.full_messages).to include('カテゴリを選択してください')
       end
       it '残量を選択しなければ登録できない' do
         @item.amount_id = '0'
         @item.valid?
-        expect(@item.errors.full_messages).to include("残量を選択してください")
+        expect(@item.errors.full_messages).to include('残量を選択してください')
       end
-      #it '賞味/消費期限が今日より前の日付だと登録できない' do
-        #@item.exp_date = Faker::Date.backward
-        #@item.valid?
-        #expect(@item.errors.full_messages).to include('Exp date は今日以降を選択してください')
-      #end
+      # it '賞味/消費期限が今日より前の日付だと登録できない' do
+      # @item.exp_date = Faker::Date.backward
+      # @item.valid?
+      # expect(@item.errors.full_messages).to include('Exp date は今日以降を選択してください')
+      # end
     end
   end
 end

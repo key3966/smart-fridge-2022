@@ -15,7 +15,7 @@ RSpec.describe User, type: :model do
       it 'nicknameが空では登録できない' do
         @user.nickname = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("ニックネームを入力してください")
+        expect(@user.errors.full_messages).to include('ニックネームを入力してください')
       end
       it '重複するnicknameが存在する場合は登録できない' do
         @user.save
@@ -26,7 +26,7 @@ RSpec.describe User, type: :model do
       it 'emailが空では登録できない' do
         @user.email = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("Eメールを入力してください")
+        expect(@user.errors.full_messages).to include('Eメールを入力してください')
       end
       it '重複したemailが存在する場合は登録できない' do
         @user.save
@@ -42,13 +42,13 @@ RSpec.describe User, type: :model do
       it 'passwordが空では登録できない' do
         @user.password = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("パスワードを入力してください")
+        expect(@user.errors.full_messages).to include('パスワードを入力してください')
       end
       it 'passwordとpassword_confirmationが不一致では登録できない' do
         @user.password_confirmation = '123abc'
         @user.password_confirmation = '123abcd'
         @user.valid?
-        expect(@user.errors.full_messages).to include("パスワード（確認用）とパスワードの入力が一致しません")
+        expect(@user.errors.full_messages).to include('パスワード（確認用）とパスワードの入力が一致しません')
       end
       it 'passwordが5文字以下では登録できない' do
         @user.password = '123ab'
@@ -83,12 +83,12 @@ RSpec.describe User, type: :model do
       it '性別が未選択では登録できない' do
         @user.gender = nil
         @user.valid?
-        expect(@user.errors.full_messages).to include("性別を入力してください")
+        expect(@user.errors.full_messages).to include('性別を入力してください')
       end
       it '生年月日が空では登録できない' do
         @user.birthday = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include("誕生日を入力してください")
+        expect(@user.errors.full_messages).to include('誕生日を入力してください')
       end
     end
   end

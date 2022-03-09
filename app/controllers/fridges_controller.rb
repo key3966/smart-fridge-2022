@@ -1,5 +1,4 @@
 class FridgesController < ApplicationController
-
   def index
     @fridge = Fridge.new
     @item = Item.new
@@ -25,5 +24,4 @@ class FridgesController < ApplicationController
   def fridge_params
     params.require(:fridge).permit(:title)
   end
-
 end

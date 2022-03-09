@@ -7,14 +7,14 @@ class Item < ApplicationRecord
   has_many :shoppings, through: :shopping_items
   has_many :losses
 
-  #validate :exp_date_check #今は必要かわからないのでコメントアウト 2022/02/17
+  # validate :exp_date_check #今は必要かわからないのでコメントアウト 2022/02/17
 
   with_options presence: true do
     validates :regular
     validates :name
   end
 
-  with_options numericality: { other_than: 0, message: "を選択してください" } do
+  with_options numericality: { other_than: 0, message: 'を選択してください' } do
     validates :category_id
     validates :amount_id
   end

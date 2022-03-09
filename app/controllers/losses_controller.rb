@@ -12,6 +12,7 @@ class LossesController < ApplicationController
   end
 
   private
+
   def loss_params
     params.permit(:loss_date, :fridge_id, :item_id, :amount_id, :category_id)
   end
