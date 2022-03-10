@@ -33,7 +33,9 @@
   <%# 冷蔵庫情報 %>
   <div class= "container">
     <div class= "row">
-
+      <% flash.each do |message_type, message| %>
+        <%= message %>
+      <% end %>
       <%# 冷蔵庫名表示 %>  
       <% if user_signed_in? && current_user.fridge_id.present? %>
         <% if current_user.fridge.title.blank? %>
