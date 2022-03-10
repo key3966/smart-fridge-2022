@@ -6,9 +6,10 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
-      redirect_to root_path
+      redirect_to root_path, flash: {success: "アイテムを登録しました"}
     else
       set_q
+      flash.now[:danger] = "登録に失敗しました。"
       render template: 'fridges/index'
     end
   end
