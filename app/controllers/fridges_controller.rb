@@ -13,7 +13,7 @@ class FridgesController < ApplicationController
     @user = User.find(current_user.id)
     if @fridge.save
       @user.update(fridge_id: @fridge.id)
-      redirect_to root_path
+      redirect_to root_path, success: "冷蔵庫を作成しました"
     else
       render :index
     end
