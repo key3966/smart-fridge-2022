@@ -16,7 +16,7 @@ class ItemsController < ApplicationController
 
   def update
     if @item.update(item_params)
-      redirect_to root_path, success: "アイテムの更新が完了しました"
+      redirect_to root_path, success: "アイテムを更新しました"
     else
       redirect_to root_path, danger: "アイテムの更新に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
       #@item = Item.new
@@ -27,7 +27,7 @@ class ItemsController < ApplicationController
 
   def destroy
     @item.destroy
-    redirect_to root_path, success: "アイテムの削除が完了しました"
+    redirect_to root_path, success: "アイテムを削除しました"
   end
 
   private
