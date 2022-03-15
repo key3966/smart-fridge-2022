@@ -6,7 +6,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
-      redirect_to root_path, success: "登録が完了しました"
+      redirect_to root_path, success: "アイテムを登録しました"
     else
       #set_q
       redirect_to root_path, danger: "アイテムの登録に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
