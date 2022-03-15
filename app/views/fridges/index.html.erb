@@ -1,6 +1,11 @@
 <%= render "shared/header"%>
 <div class="box">
-
+  <% flash.each do |message_type, message| %>
+    <div class="alert alert-<%= message_type %>">
+      <% message2 = message.gsub(",","<br>") %>
+      <%= message2.html_safe %>
+    </div>
+  <% end %>
   <%# 冷蔵庫新規登録＆共有リクエストフォーム %>
   <div class= "container">
     <div class= "row">
@@ -33,7 +38,6 @@
   <%# 冷蔵庫情報 %>
   <div class= "container">
     <div class= "row">
-
       <%# 冷蔵庫名表示 %>  
       <% if user_signed_in? && current_user.fridge_id.present? %>
         <% if current_user.fridge.title.blank? %>

@@ -6,26 +6,28 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
-      redirect_to root_path
+      redirect_to root_path, success: "登録が完了しました"
     else
-      set_q
-      render template: 'fridges/index'
+      #set_q
+      redirect_to root_path, danger: "アイテムの登録に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
+      #render template: 'fridges/index'
     end
   end
 
   def update
     if @item.update(item_params)
-      redirect_to root_path
+      redirect_to root_path, success: "アイテムを更新しました"
     else
-      @item = Item.new
-      set_q
-      render template: 'fridges/index'
+      redirect_to root_path, danger: "アイテムの更新に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
+      #@item = Item.new
+      #set_q
+      #render template: 'fridges/index'
     end
   end
 
   def destroy
     @item.destroy
-    redirect_to root_path
+    redirect_to root_path, success: "アイテムを削除しました"
   end
 
   private

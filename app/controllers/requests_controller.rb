@@ -6,7 +6,7 @@ class RequestsController < ApplicationController
   def create
     @request = Request.new(request_params)
     if @request.save
-      redirect_to root_path
+      redirect_to root_path, success: "共有リクエストを申請しました"
     else
       render_top
     end
@@ -15,7 +15,7 @@ class RequestsController < ApplicationController
   def update
     if @request.user.update(fridge_id: @request.fridge_id)
       @request.destroy
-      redirect_to root_path
+      redirect_to root_path, success: "共有リクエストを承認しました"
     else
       render_top
     end
@@ -23,7 +23,7 @@ class RequestsController < ApplicationController
 
   def destroy
     @request.destroy
-    redirect_to root_path
+    redirect_to root_path, danger: "共有リクエストを拒否しました"
   end
 
   private
