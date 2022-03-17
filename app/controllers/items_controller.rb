@@ -8,9 +8,7 @@ class ItemsController < ApplicationController
     if @item.save
       redirect_to root_path, success: "アイテムを登録しました"
     else
-      #set_q
       redirect_to root_path, danger: "アイテムの登録に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
-      #render template: 'fridges/index'
     end
   end
 
@@ -19,9 +17,6 @@ class ItemsController < ApplicationController
       redirect_to root_path, success: "アイテムを更新しました"
     else
       redirect_to root_path, danger: "アイテムの更新に失敗しました：<br>#{@item.errors.full_messages.join(',')}"
-      #@item = Item.new
-      #set_q
-      #render template: 'fridges/index'
     end
   end
 
@@ -42,11 +37,5 @@ class ItemsController < ApplicationController
 
   def same_fridge?
     redirect_to root_path unless @item.fridge_id == current_user.fridge_id
-  end
-
-  def set_q
-    @q = Item.ransack(params[:q])
-    @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
-    @items = @q.result(distinct: true)
   end
 end
