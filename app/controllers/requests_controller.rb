@@ -39,6 +39,7 @@ class RequestsController < ApplicationController
   def render_top
     @q = Item.ransack(params[:q])
     @q.sorts = ['regular desc', 'amount_id asc', 'exp_date asc']
+    #優先順位：常備アイテム、残量、賞味/消費期限順
     @items = @q.result(distinct: true)
     render template: 'fridges/index'
   end
