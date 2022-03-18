@@ -5,6 +5,7 @@ class FridgesController < ApplicationController
     @request = Request.new
     @q = Item.ransack(params[:q])
     @q.sorts = ['amount_id desc', 'category_id asc', 'exp_date asc', 'regular desc']
+    #残量：少ない→多い カテゴリ：生鮮→日用品 賞味期限：昇順 常備アイテム：チェックが優先
     @items = @q.result(distinct: true)
   end
 
