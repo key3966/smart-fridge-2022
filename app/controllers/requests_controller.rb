@@ -45,6 +45,7 @@ class RequestsController < ApplicationController
   end
 
   def same_fridge?
+    #共有リクエストを同じ冷蔵庫のユーザー以外が操作するとリダイレクトされる処理
     unless @request.fridge_id == current_user.fridge_id || @request.fridge_id == current_user.request.fridge_id
       redirect_to root_path
     end
