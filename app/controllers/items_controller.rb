@@ -36,6 +36,7 @@ class ItemsController < ApplicationController
   end
 
   def same_fridge?
+    #アイテムに紐づく冷蔵庫IDとユーザーの冷蔵庫IDが一致しなければリダイレクトする
     redirect_to root_path unless @item.fridge_id == current_user.fridge_id
   end
 end
