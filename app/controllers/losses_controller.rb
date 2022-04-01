@@ -5,7 +5,7 @@ class LossesController < ApplicationController
     @loss_item = LossItem.new(loss_params)
     if @loss_item.valid?
       @loss_item.save
-      redirect_to root_path, danger: "アイテムをロスにしました"
+      redirect_to root_path, danger: 'アイテムをロスにしました'
     else
       redirect_to root_path
     end
